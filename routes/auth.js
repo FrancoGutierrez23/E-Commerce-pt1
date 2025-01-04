@@ -25,6 +25,7 @@ const authenticateToken = (req, res, next) => {
 };
 
 
+
 // Registration route
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
@@ -102,5 +103,4 @@ router.get('/profile', authenticateToken, (req, res) => {
 });
 
 
-
-module.exports = router;
+module.exports = {router, authenticateToken};
