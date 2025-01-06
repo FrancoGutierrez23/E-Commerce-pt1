@@ -73,6 +73,7 @@ router.put('/', async (req, res) => {
 });
 
 
+//Remove item from cart
 router.delete('/', async (req, res) => {
     const { cartItemId } = req.body;
 
@@ -100,6 +101,55 @@ router.delete('/', async (req, res) => {
         res.status(500).json({ error: 'Server error. Please try again.' });
     }
 });
+
+
+// Checkout endpoint
+router.post('/:cartId/checkout', async (req, res) => {
+    const { cartId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        // Fetch cart items
+        const cartItemsResult = await db.query(
+            'SELECT ci.product_id, ci.quantity, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = $1',
+            [cartId]
+        );
+        const cartItems = cartItemsResult.rows;
+
+        if (cartItems.length === 0) {
+            return res.status(400).json({ error: 'Your cart is empty.' });
+        }
+
+        // Calculate total price
+        const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+        // Create new order
+        const orderResult = await db.query(
+            'INSERT INTO orders (user_id, status, total_price) VALUES ($1, $2, $3) RETURNING id',
+            [userId, 'Pending', totalPrice]
+        );
+        const orderId = orderResult.rows[0].id;
+
+        // Insert items into order_items
+        const orderItemsQueries = cartItems.map(item =>
+            db.query(
+                'INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)',
+                [orderId, item.product_id, item.quantity, item.price]
+            )
+        );
+        await Promise.all(orderItemsQueries);
+
+        // Clear the cart
+        await db.query('DELETE FROM cart_items WHERE cart_id = $1', [cartId]);
+        await db.query('DELETE FROM carts WHERE id = $1', [cartId]);
+
+        res.status(201).json({ message: 'Checkout successful', orderId });
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ error: 'Server error. Please try again.' });
+    }
+});
+
 
 
 
