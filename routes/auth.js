@@ -2,10 +2,11 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db/index.js');
+require('dotenv').config();
 const router = express.Router();
 
-// Secret for JWT signing
-const JWT_SECRET = 'your-256-bit-secret';
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -93,8 +94,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Protected route example
-// Protected route example
+
 router.get('/profile', authenticateToken, (req, res) => {
     res.status(200).json({
         message: 'Profile accessed successfully!',
