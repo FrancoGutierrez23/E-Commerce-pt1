@@ -2,30 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db/index.js');
-require('dotenv').config();
 const router = express.Router();
-
-
-const JWT_SECRET = process.env.JWT_SECRET;
-
-const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) {
-        return res.status(401).json({ error: 'Access token required.' });
-    }
-
-    try {
-        const user = jwt.verify(token, JWT_SECRET);
-        req.user = user; // Attach user info to request object
-        next();
-    } catch (error) {
-        res.status(403).json({ error: 'Invalid or expired token.' });
-    }
-};
-
-
+const authenticateToken = require('./helpers.js');
 
 // Registration route
 router.post('/register', async (req, res) => {
