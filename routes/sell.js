@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/index.js');
-const { router: authRouter, authenticateToken } = require('./auth');
+const authenticateToken = require('./helpers.js');
 
 // Apply middleware to all routes in this file
 router.use(authenticateToken);

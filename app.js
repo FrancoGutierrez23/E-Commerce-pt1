@@ -4,7 +4,7 @@ const app = express();
 const port = 4000;
 
 const userRoutes = require('./routes/user');
-const { router: authRoutes, authenticateToken } = require('./routes/auth');
+const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
 const sellRoutes = require('./routes/sell');
 const cartRoutes = require('./routes/cart');
