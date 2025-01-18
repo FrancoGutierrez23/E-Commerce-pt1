@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/index.js');
-const { use } = require('./cart.js');
 
 
 //Get cart for a user
