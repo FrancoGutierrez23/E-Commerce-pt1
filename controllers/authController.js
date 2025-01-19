@@ -14,9 +14,14 @@ const register = async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const result = await authModel.createUser(username, email, hashedPassword);
+
+        const user = result.rows[0];
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+
         res.status(201).json({
             message: 'User registered successfully!',
-            user: result.rows[0],
+            user: { id: user.id, username: user.username, email: user.email },
+            token,
         });
     } catch (error) {
         if (error.code === '23505') {
@@ -26,6 +31,7 @@ const register = async (req, res) => {
         }
     }
 };
+
 
 const login = async (req, res) => {
     const { username, password } = req.body;
