@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
@@ -13,7 +15,19 @@ const ordersRoutes = require('./routes/orders');
 
 
 app.use(bodyParser.json());
-app.use(cors())
+
+app.use(cors());
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

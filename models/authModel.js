@@ -13,7 +13,12 @@ const getUserByUsername = async (username) => {
     return await db.query('SELECT * FROM users WHERE username = $1', [username]);
 };
 
+const getUserById = async (id) => {
+    return await db.query('SELECT * FROM users WHERE id = $1', [id]);
+};
+
 module.exports = {
     createUser,
-    getUserByUsername
+    getUserByUsername,
+    getUserById
 };
