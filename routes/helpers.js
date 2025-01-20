@@ -8,11 +8,13 @@ const authenticateToken = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
+        console.log(req);
         return res.status(401).json({ error: 'Access token required.' });
     }
 
     try {
         const user = jwt.verify(token, JWT_SECRET);
+        console.log(user);
         req.user = user; // Attach user info to request object
         next();
     } catch (error) {

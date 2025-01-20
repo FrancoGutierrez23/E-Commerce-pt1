@@ -17,7 +17,7 @@ function App() {
         <Route path="/cart" element={ <CartList /> } />
         <Route path="/auth/login" element={ <Login /> } />
         <Route path="/auth/register" element={ <Register /> } />
-        <Route path="/user" element={ <User /> } />
+        <Route path="/user/:userId" element={ <User /> } />
       </Routes>
    </div>
   );

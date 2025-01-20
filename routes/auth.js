@@ -29,7 +29,7 @@ router.get(
 // Logout route
 router.get('/logout', (req, res) => {
     req.logout(err => {
-        if (err) return res.status(500).send('Error logging out.');
+        if (err) return res.status(500).json('Error logging out.');
         res.redirect('/'); // Redirect to home page
     });
 });

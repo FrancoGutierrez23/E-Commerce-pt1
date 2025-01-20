@@ -1,29 +1,27 @@
 const userModel = require('../models/userModel.js');
 
-// Get all users
-const getAllUsers = async (req, res) => {
-    try {
-        const result = await userModel.getAllUsers();
-        res.status(200).json(result.rows); // Send all users
-    } catch (error) {
-        console.error('Database query error:', error);
-        res.status(500).send('Error querying database');
-    }
-};
-
 // Get a user by ID
 const getUserById = async (req, res) => {
     try {
-        const result = await userModel.getUserById(req.params.userId);
+        console.log(req.params.userId)
+        const tokenUserId = req.user.userId; // The user ID from the verified token
+        const requestedUserId = req.params.userId;
+
+        // Ensure the token's user ID matches the requested user ID
+        if (tokenUserId !== requestedUserId) {
+            return res.status(403).json({ error: 'Unauthorized access to this user profile.' });
+        }
+
+        const result = await userModel.getUserById(requestedUserId);
 
         if (result.rows.length === 0) {
-            return res.status(404).send('User not found');
+            return res.status(404).json('User not found');
         }
 
         res.status(200).json(result.rows[0]); // Send the found user
     } catch (error) {
         console.error('Database query error:', error);
-        res.status(500).send('Error querying database');
+        res.status(500).json('Error querying database');
     }
 };
 
@@ -53,7 +51,6 @@ const updateUser = async (req, res) => {
 };
 
 module.exports = {
-    getAllUsers,
     getUserById,
     updateUser
 };

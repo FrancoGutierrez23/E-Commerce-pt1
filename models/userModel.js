@@ -1,10 +1,5 @@
 const db = require('../db/index.js');
 
-// Get all users
-const getAllUsers = async () => {
-    return await db.query('SELECT * FROM users');
-};
-
 // Get a single user by ID
 const getUserById = async (userId) => {
     return await db.query('SELECT * FROM users WHERE id = $1', [userId]);
@@ -46,7 +41,6 @@ const updateUser = async (id, username, email, password) => {
 };
 
 module.exports = {
-    getAllUsers,
     getUserById,
     updateUser
 };

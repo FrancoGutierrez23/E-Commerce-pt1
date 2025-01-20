@@ -19,11 +19,14 @@ export default function Register() {
             });
 
             const data = await response.json();
+
             if (response.ok) {
                 setSuccess('Registration successful!');
                 setError('');
-                localStorage.setItem('token', data.token); // Save JWT token
-                window.location.href = '/home'; // Redirect to home
+
+                const { user, token } = data;
+                localStorage.setItem('token', token); // Save JWT token
+                window.location.href = `/user/${user.id}`; // Redirect to home
             } else {
                 setError(data.error || 'Registration failed.');
                 setSuccess('');

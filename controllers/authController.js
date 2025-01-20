@@ -37,7 +37,7 @@ const login = async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        return res.status(400).send('Username and password are required.');
+        return res.status(400).json({ error: 'Username and password are required.' }); // Changed to .json
     }
 
     try {
@@ -45,23 +45,29 @@ const login = async (req, res) => {
         const user = result.rows[0];
 
         if (!user) {
-            return res.status(400).send('Invalid credentials.');
+            return res.status(400).json({ error: 'Invalid username.' }); // Changed to .json
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(400).send('Invalid credentials.');
+            return res.status(400).json({ error: 'Invalid password.' }); // Changed to .json
         }
 
-        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '10h' });
 
-        res.status(200).send({ message: 'Login successful!', token });
+        res.status(200).json({
+            message: 'Login successful!',
+            user: { id: user.id, username: user.username },
+            token, // JWT token for authentication
+        });
+
     } catch (error) {
         console.log(error);
-        res.status(500).send('Internal Server Error.');
+        res.status(500).json({ error: 'Internal Server Error.' }); // Changed to .json
     }
 };
+
 
 const getProfile = (req, res) => {
     res.status(200).json({
