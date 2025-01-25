@@ -10,9 +10,6 @@ router.post('/register', authController.register);
 // Login route
 router.post('/login', authController.login);
 
-// Profile route
-router.get('/profile', authenticateToken, authController.getProfile);
-
 // Google OAuth route
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -20,10 +17,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get(
     '/google/callback',
     passport.authenticate('google', { failureRedirect: '/auth/login' }),
-    (req, res) => {
-        // Successful authentication
-        res.redirect('http://localhost:3000/home');
-    }
+    authController.googleLogin
 );
 
 // Logout route

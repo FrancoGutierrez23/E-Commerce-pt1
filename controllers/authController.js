@@ -37,7 +37,7 @@ const login = async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required.' }); // Changed to .json
+        return res.status(400).json({ error: 'Username and password are required.' });
     }
 
     try {
@@ -45,13 +45,13 @@ const login = async (req, res) => {
         const user = result.rows[0];
 
         if (!user) {
-            return res.status(400).json({ error: 'Invalid username.' }); // Changed to .json
+            return res.status(400).json({ error: 'Invalid username.' });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(400).json({ error: 'Invalid password.' }); // Changed to .json
+            return res.status(400).json({ error: 'Invalid password.' });
         }
 
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '10h' });
@@ -64,20 +64,26 @@ const login = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'Internal Server Error.' }); // Changed to .json
+        res.status(500).json({ error: 'Internal Server Error.' });
     }
 };
 
+const googleLogin = async (req, res) => {
+    try {
+        const user = req.user; // User authenticated via Google
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '10h' });
 
-const getProfile = (req, res) => {
-    res.status(200).json({
-        message: 'Profile accessed successfully!',
-        user: req.user,
-    });
-};
+        // Redirect to the frontend with the token as a query parameter
+        res.redirect(`http://localhost:3000/user/${user.id}?token=${token}`);
+    } catch (error) {
+        console.error('Error during Google login:', error);
+        res.status(500).json({ error: 'Internal Server Error.' });
+    }
+}
+
 
 module.exports = {
     register,
-    login,
-    getProfile
+    login, 
+    googleLogin
 };

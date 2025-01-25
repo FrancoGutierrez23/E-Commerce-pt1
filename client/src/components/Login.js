@@ -7,7 +7,7 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); // Clear previous errors
+        setError('');
     
         try {
             const response = await fetch('http://localhost:4000/auth/login', {
@@ -30,7 +30,7 @@ export default function Login() {
                 // Save the token to localStorage
                 localStorage.setItem('token', token);
     
-                // Redirect to user profile or home
+                // Redirect to user profile
                 window.location.href = `/user/${user.id}`;
             } else {
                 // Handle non-JSON response (e.g., HTML error page)
