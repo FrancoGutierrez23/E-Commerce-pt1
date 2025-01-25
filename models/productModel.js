@@ -8,6 +8,10 @@ const getProductByName = async(productname) => {
     return await db.query('SELECT * FROM products WHERE name ILIKE $1', [productname]);
 };
 
+const getProductById = async(id) => {
+    return await db.query('SELECT * FROM products WHERE id = $1', [id])
+}
+
 const createProduct = async (name, description, price) => {
     return await db.query(
         `INSERT INTO products (name, description, price) 
@@ -65,6 +69,7 @@ module.exports = {
     getProductByName,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductById
 };
 

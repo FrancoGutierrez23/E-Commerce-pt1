@@ -26,7 +26,24 @@ const getProductsByName = async (req, res) => {
     }
 };
 
+const getProductById = async (req, res) => {
+    try {
+        const id = req.params.id; // Remove any surrounding spaces
+        const result = await productModel.getProductById(id);
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('Product not found');
+        }
+
+        res.send(result.rows[0]); // Send the first row of the result
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Error querying database');
+    }
+}
+
 module.exports = {
     getProducts,
-    getProductsByName
+    getProductsByName,
+    getProductById
 };

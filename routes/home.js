@@ -4,7 +4,7 @@ const homeController = require('../controllers/homeController.js');
 
 router.get('/', homeController.getProducts);
 
-router.get('/:productname', homeController.getProductsByName);
+router.get('/:id', homeController.getProductById);
 
 
 

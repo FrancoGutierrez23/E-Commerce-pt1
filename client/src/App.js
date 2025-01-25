@@ -6,6 +6,7 @@ import Register from './components/Register.js';
 import Logout from './components/Logout.js';
 import Nav from './components/Nav.js';
 import User from './components/User.js';
+import ProductFocus from './components/ProductFocus.js';
 
 
 
@@ -16,6 +17,7 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/home" element={ <Home /> } />
+        <Route path="/home/:id" element={ <ProductFocus /> } />
         <Route path="/cart" element={ <CartList /> } />
         <Route path="/auth/login" element={ <Login /> } />
         <Route path="/auth/register" element={ <Register /> } />
