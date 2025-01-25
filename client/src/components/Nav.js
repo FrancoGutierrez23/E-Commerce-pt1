@@ -33,12 +33,13 @@ export default function Nav() {
                     {userId ? (
                         <>
                         <Link to={`/user/${userId}`}>Profile</Link>
-                    
-                        <Link to='/logout/'>Logout</Link>
+                        
+                        <Link to='/auth/logout/'>Logout</Link>
                         </>
                     ) : (
                         <>
                         <Link to="/auth/login">Login</Link>
+                        
                         <Link to="/auth/register">Register</Link>
                         </>
                     )}
