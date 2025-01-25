@@ -1,9 +1,12 @@
 const cartModel = require('../models/cartModel.js');
 
-const getCart = async (req, res) => {
-    const { id } = req.body;
+const getCart = async (req, res) => { 
     try {
-        const result = await cartModel.getCartItems(id);
+        console.log(req.params.id)
+        const requestedUserId = req.params.id;
+
+        const result = await cartModel.getCartItems(requestedUserId);
+
         if (result.rows.length === 0) {
             return res.status(404).send('You have not cart yet.');
         }

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('./helpers.js');
 const cartController = require('../controllers/cartController.js');
 
 // Get cart for a user
-router.get('/', cartController.getCart);
+router.get('/:id',cartController.getCart);
 
 // Add an item to a cart
 router.post('/', cartController.addToCart);

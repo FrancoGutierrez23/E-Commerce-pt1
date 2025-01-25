@@ -54,7 +54,7 @@ const login = async (req, res) => {
             return res.status(400).json({ error: 'Invalid password.' });
         }
 
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '10h' });
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.status(200).json({
             message: 'Login successful!',
@@ -71,7 +71,7 @@ const login = async (req, res) => {
 const googleLogin = async (req, res) => {
     try {
         const user = req.user; // User authenticated via Google
-        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '10h' });
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
 
         // Redirect to the frontend with the token as a query parameter
         res.redirect(`http://localhost:3000/user/${user.id}?token=${token}`);

@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/home" element={ <Home /> } />
         <Route path="/home/:id" element={ <ProductFocus /> } />
-        <Route path="/cart" element={ <CartList /> } />
+        <Route path="/cart/:id" element={ <CartList /> } />
         <Route path="/auth/login" element={ <Login /> } />
         <Route path="/auth/register" element={ <Register /> } />
         <Route path="/auth/logout" element={ <Logout /> } />
