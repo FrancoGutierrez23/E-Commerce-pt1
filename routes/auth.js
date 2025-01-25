@@ -31,13 +31,22 @@ router.get(
 // Logout route
 router.get('/logout', authController.logout);
 
+// auth.js (routes)
 router.get('/status', (req, res) => {
-    if (req.isAuthenticated()) {
-      res.status(200).json({ user: req.user });
-    } else {
-      res.status(401).json({ error: 'Not authenticated' });
-    }
-  });
+  if (req.isAuthenticated()) {
+      res.json({
+          isAuthenticated: true,
+          user: {
+              id: req.user.id,
+              username: req.user.username,
+              email: req.user.email,
+          },
+      });
+  } else {
+      res.json({ isAuthenticated: false });
+  }
+});
+
   
 
 module.exports = router;

@@ -77,6 +77,15 @@ export default function Register() {
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
+
+            <hr />
+            <button
+                type="button"
+                className="google-login"
+                onClick={() => (window.location.href = 'http://localhost:4000/auth/google')}
+            >
+                Register with Google
+            </button>
         </form>
     );
 }
