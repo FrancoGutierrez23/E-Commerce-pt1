@@ -6,6 +6,9 @@ const app = express();
 const cors = require('cors');
 const port = 4000;
 
+const pgSession = require('connect-pg-simple')(session);
+const db = require('./db/index');
+
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
@@ -20,11 +23,29 @@ app.use(cors());
 
 app.use(
   session({
+    store: new pgSession({
+      pool: db.pool,
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 10, // Session expires in 10 hours
+    },
   })
 );
+
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) return next();
+  res.status(401).json({ error: 'Unauthorized' });
+};
+
+// Example protected route
+app.get('/protected', isAuthenticated, (req, res) => {
+  res.json({ message: 'You are authenticated', user: req.user });
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -35,7 +56,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
-app.use('/home', homeRoutes);
+app.use('/home', isAuthenticated,homeRoutes);
 app.use('/sell', sellRoutes);
 app.use('/cart', cartRoutes);
 app.use('/orders', ordersRoutes);

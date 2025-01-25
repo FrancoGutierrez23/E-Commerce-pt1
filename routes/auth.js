@@ -4,6 +4,14 @@ const authController = require('../controllers/authController.js');
 const authenticateToken = require('./helpers.js');
 const passport = require('./config/passport.js');
 
+const isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ error: 'Unauthorized. Please log in.' });
+  };
+  
+
 // Registration route
 router.post('/register', authController.register);
 
@@ -21,11 +29,15 @@ router.get(
 );
 
 // Logout route
-router.get('/logout', (req, res) => {
-    req.logout(err => {
-        if (err) return res.status(500).json('Error logging out.');
-        res.redirect('/'); // Redirect to home page
-    });
-});
+router.get('/logout', authController.logout);
+
+router.get('/status', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.status(200).json({ user: req.user });
+    } else {
+      res.status(401).json({ error: 'Not authenticated' });
+    }
+  });
+  
 
 module.exports = router;
