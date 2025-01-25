@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
-app.use('/home', isAuthenticated,homeRoutes);
+app.use('/home',homeRoutes);
 app.use('/sell', sellRoutes);
 app.use('/cart', cartRoutes);
 app.use('/orders', ordersRoutes);
