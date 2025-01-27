@@ -2,7 +2,17 @@ const db = require('../db/index.js');
 
 const getOrdersByUserId = async (userId) => {
     return await db.query(
-        `SELECT * FROM order_items WHERE order_id = (SELECT id FROM orders WHERE user_id = $1)`,
+        `SELECT 
+            o.id AS order_id,
+            o.total_price,
+            o.created_at,
+            o.status,
+            oi.product_id,
+            oi.quantity,
+            oi.price
+         FROM orders o
+         JOIN order_items oi ON o.id = oi.order_id
+         WHERE o.user_id = $1`,
         [userId]
     );
 };

@@ -28,23 +28,25 @@ export default function Nav() {
         <nav>
             <ul style={{display: "flex", listStyle: "none", width: "300px", justifyContent: "space-between"}}>
                 <li><Link to="/home">Home</Link></li>
-                <li>
-                    {userId ? (
-                        <>
-                        <Link to={`/cart/${userId}`}>Cart</Link>
+                
+                {userId ? (
+                    <>
+                    <li><Link to={`/cart/${userId}`}>Cart</Link></li>
 
-                        <Link to={`/user/${userId}`}>Profile</Link>
+                    <li><Link to={`/user/${userId}`}>Profile</Link></li>
+                    
+                    <li><Link to={`/orders/${userId}`}>Orders</Link></li>
+
+                    <li><Link to='/auth/logout/'>Logout</Link></li>
+                    </>
+                ) : (
+                    <>
+                    <Link to="/auth/login">Login</Link>
                         
-                        <Link to='/auth/logout/'>Logout</Link>
-                        </>
-                    ) : (
-                        <>
-                        <Link to="/auth/login">Login</Link>
-                        
-                        <Link to="/auth/register">Register</Link>
-                        </>
-                    )}
-                </li>
+                    <Link to="/auth/register">Register</Link>
+                    </>
+                )}
+                
             </ul>
         </nav>
     )

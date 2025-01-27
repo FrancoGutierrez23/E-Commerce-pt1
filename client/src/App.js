@@ -7,8 +7,7 @@ import Logout from './components/Logout.js';
 import Nav from './components/Nav.js';
 import User from './components/User.js';
 import ProductFocus from './components/ProductFocus.js';
-
-
+import OrderList from './components/OrderList.js';
 
 function App() {
 
@@ -23,6 +22,7 @@ function App() {
         <Route path="/auth/register" element={ <Register /> } />
         <Route path="/auth/logout" element={ <Logout /> } />
         <Route path="/user/:userId" element={ <User /> } />
+        <Route path='/orders/:userId' element={ <OrderList /> } />
       </Routes>
    </div>
   );

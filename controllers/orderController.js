@@ -1,8 +1,9 @@
 const orderModel = require('../models/orderModel.js');
+const db = require('../db/index.js');
 
 // Get all orders for a user
 const getOrders = async (req, res) => {
-    const { userId } = req.body;
+    const userId = req.params.userId;
 
     try {
         const result = await orderModel.getOrdersByUserId(userId);
@@ -19,7 +20,8 @@ const getOrders = async (req, res) => {
 
 // Make an order of a single product
 const createOrder = async (req, res) => {
-    const { userId, productId, quantity, itemPrice } = req.body;
+    const userId = req.params.userId;
+    const { productId, quantity, itemPrice } = req.body;
     const totalPrice = quantity * itemPrice;
 
     try {
@@ -31,6 +33,7 @@ const createOrder = async (req, res) => {
         res.send(result.rows);
     } catch (error) {
         res.status(500).json({ error: 'Server error. Please try again.' });
+        console.log(error);
     }
 };
 
