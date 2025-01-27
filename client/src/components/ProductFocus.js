@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import AddToCartModal from './modals/AddToCartModal';
 
 export default function ProductFocus() {
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isModalOpen, setModalOpen] = useState(false);
 
     // Fetch product when the component mounts
     useEffect(() => {
@@ -26,6 +28,43 @@ export default function ProductFocus() {
 
         obtainProduct();
     }, []);
+    
+
+    const handleAddToCart = async (quantity) => {
+        let userId;
+        const response = await fetch("http://localhost:4000/auth/status", {
+            credentials: "include",
+        });
+        const data = await response.json();
+        if(!data.isAuthenticated) {
+            alert("You need to register/login first.");
+        } else {
+            userId = data.user.id;
+            // Send fetch request to add to cart
+        fetch("http://localhost:4000/cart", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              productId: product.id,
+              quantity,
+            }),
+          })
+            .then((res) => {
+              if (!res.ok) throw new Error("Failed to add to cart");
+              return res.json();
+            })
+            .then((data) => {
+              alert("Product added to cart successfully!");
+            })
+            .catch((err) => {
+              console.error(err.message);
+              alert("Failed to add to cart.");
+            });
+        }
+      };
 
     // Render loading, error, or product list
     if (loading) return <div>Loading...</div>;
@@ -39,9 +78,17 @@ export default function ProductFocus() {
             <br></br>
             <h2>{product.name}</h2>
             <p>{product.description}</p>
-            <span>{product.price}</span>
+            <span>${product.price}</span>
             <button>Buy</button>
-            <button>Add to cart</button>
+            <button onClick={() => setModalOpen(true)}>Add to cart</button>
+
+            {isModalOpen && (
+                <AddToCartModal
+                    product={product}
+                    onClose={() => setModalOpen(false)}
+                    onConfirm={handleAddToCart}
+                />
+            )}
         </div>
     )
 };
