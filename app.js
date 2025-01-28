@@ -15,6 +15,7 @@ const homeRoutes = require('./routes/home');
 const sellRoutes = require('./routes/sell');
 const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
+const checkoutRoutes = require('./routes/checkout');
 
 
 app.use(bodyParser.json());
@@ -63,6 +64,7 @@ app.use('/home',homeRoutes);
 app.use('/sell', sellRoutes);
 app.use('/cart', cartRoutes);
 app.use('/orders', ordersRoutes);
+app.use('/checkout', checkoutRoutes);
 
 
 app.listen(port, () => {

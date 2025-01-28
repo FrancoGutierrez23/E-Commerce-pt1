@@ -30,10 +30,10 @@ export default function OrderItem({order}) {
     return (
         <div>
             <img alt={product.name} src={product.image_url} style={{height: '150px', width: '150px'}}></img>
-            <p>{order.product_id}</p>
+            <p>{product.name}</p>
             <p>Quantity: {order.quantity}</p>
             <span>Total: {order.total_price}</span>
-            <p>{order.status}</p>
+            <p>Status: {order.status}</p>
             <br></br>
         </div>
     );

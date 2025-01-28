@@ -8,6 +8,7 @@ import Nav from './components/Nav.js';
 import User from './components/User.js';
 import ProductFocus from './components/ProductFocus.js';
 import OrderList from './components/OrderList.js';
+import Checkout from './components/Checkout.js';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/auth/logout" element={ <Logout /> } />
         <Route path="/user/:userId" element={ <User /> } />
         <Route path='/orders/:userId' element={ <OrderList /> } />
+        <Route path="/checkout" element={ <Checkout /> } />
       </Routes>
    </div>
   );
