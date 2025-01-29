@@ -50,6 +50,7 @@ export default function ProductFocus() {
               userId,
               productId: product.id,
               quantity,
+              price: product.price,
             }),
           })
             .then((res) => {

@@ -4,11 +4,14 @@ const getCartItems = async (userId) => {
     return await db.query('SELECT * FROM cart_items WHERE cart_id = (SELECT id FROM carts WHERE user_id = $1)', [userId]);
 };
 
-const addItemToCart = async (userId, productId, quantity) => {
+const addItemToCart = async (userId, productId, quantity, price) => {
     const checkForCart = await db.query('SELECT id FROM carts WHERE user_id = $1', [userId]);
     const cartId = checkForCart.rows[0] ? checkForCart.rows[0].id : (await db.query('INSERT INTO carts (user_id) VALUES ($1) RETURNING id', [userId])).rows[0].id;
     
-    await db.query('INSERT INTO cart_items (cart_id, product_id, quantity) VALUES ($1, $2, $3)', [cartId, productId, quantity]);
+    await db.query('INSERT INTO cart_items (cart_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)', [cartId, productId, quantity, price]);
+
+    await db.query('UPDATE carts SET cart_total = cart_total + $1 WHERE user_id = $2', [quantity*price, userId]);
+
     return db.query('SELECT * FROM cart_items WHERE cart_id = $1', [cartId]);
 };
 

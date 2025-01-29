@@ -9,7 +9,8 @@ const getOrdersByUserId = async (userId) => {
             o.status,
             oi.product_id,
             oi.quantity,
-            oi.price
+            oi.price,
+            oi.id AS key
          FROM orders o
          JOIN order_items oi ON o.id = oi.order_id
          WHERE o.user_id = $1`,

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import CartItem from './CartItem';
+import CheckoutForm from './CheckoutForm';
+
+const stripePromise = loadStripe('pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8');
 
 export default function CartList() {
     const navigate = useNavigate();
@@ -19,6 +24,7 @@ export default function CartList() {
                     throw new Error('You have not cart yet')
                 } else if (response.ok) {
                     const data = await response.json();
+                    console.log(data);
                     setCartItems(data);
                 } else if (!response.ok) {
                     throw new Error('Failed to fetch products');
@@ -29,9 +35,14 @@ export default function CartList() {
                 setLoading(false);
             }
         };
-
         obtainCartItems();
     }, [userId]);
+
+    let cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    cartTotal = Math.round(cartTotal * 100) / 100;
+
+    const cartId = cartItems.length > 0 ? cartItems[0].cart_id : null;
+
 
     const handleCheckout = async () => {
         try {
@@ -68,6 +79,9 @@ export default function CartList() {
             <button onClick={handleCheckout} disabled={cartItems.length === 0}>
                 Checkout
             </button>
+            <Elements stripe={stripePromise}>
+                <CheckoutForm totalAmount={cartTotal} userId={userId} cartId={cartId} />
+            </Elements>
         </div>
     );
 }

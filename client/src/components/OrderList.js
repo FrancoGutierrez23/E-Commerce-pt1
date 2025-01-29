@@ -34,7 +34,7 @@ export default function OrderList() {
     return (
         <ul>
             {orders.map((order) => (
-                <li key={order.order_id}>
+                <li key={order.key}>
                     <OrderItem order={order} ></OrderItem>
                 </li>
             ))}

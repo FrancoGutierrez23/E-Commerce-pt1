@@ -1,9 +1,20 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 export default function Checkout() {
     const location = useLocation();
-    const { orderId } = location.state || {};
+    const { orderId: orderIdFromState } = location.state || {};
+    const { userId } = useParams();
+    const [orderId, setOrderId] = useState(orderIdFromState);
+
+    useEffect(() => {
+        if (!orderId) {
+            fetch(`http://localhost:4000/orders/${userId}/last-order`)
+                .then(res => res.json())
+                .then(data => setOrderId(data.orderId))
+                .catch(err => console.error("Error fetching last order:", err));
+        }
+    }, [orderId, userId]);
 
     return (
         <div>
@@ -16,3 +27,4 @@ export default function Checkout() {
         </div>
     );
 }
+

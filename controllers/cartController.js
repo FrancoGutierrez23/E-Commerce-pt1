@@ -18,9 +18,9 @@ const getCart = async (req, res) => {
 };
 
 const addToCart = async (req, res) => {
-    const { userId, productId, quantity } = req.body;
+    const { userId, productId, quantity, price } = req.body;
     try {
-        const result = await cartModel.addItemToCart(userId, productId, quantity);
+        const result = await cartModel.addItemToCart(userId, productId, quantity, price);
         res.send(result.rows);
     } catch (error) {
         console.log(error);
