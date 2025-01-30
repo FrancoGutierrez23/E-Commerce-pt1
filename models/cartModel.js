@@ -15,13 +15,46 @@ const addItemToCart = async (userId, productId, quantity, price) => {
     return db.query('SELECT * FROM cart_items WHERE cart_id = $1', [cartId]);
 };
 
-const updateItemQuantity = async (userId, quantity, productId) => {
-    return await db.query('UPDATE cart_items SET quantity = $1 WHERE product_id = $2 AND cart_id = (SELECT id FROM carts WHERE user_id = $3)', [quantity, productId, userId]);
+const updateItemQuantity = async (userId, quantity, productId, price) => {
+    // Get current quantity to calculate the old total for that product
+    console.log('Price:', price)
+    const currentItem = await db.query(
+        'SELECT quantity FROM cart_items WHERE product_id = $1 AND cart_id = (SELECT id FROM carts WHERE user_id = $2)', 
+        [productId, userId]
+    );
+    console.log('Current Item:', currentItem);
+
+
+    const oldQuantity = currentItem.rows[0]?.quantity;
+    if (oldQuantity !== undefined) {
+        // Calculate old and new totals
+        const oldTotal = oldQuantity * price;
+        const newTotal = quantity * price;
+        console.log(oldTotal);
+        console.log(newTotal);
+
+        // Update the cart's total by subtracting the old total and adding the new total
+        await db.query('UPDATE carts SET cart_total = cart_total - $1 + $2 WHERE user_id = $3', [oldTotal, newTotal, userId]);
+        
+        // Now update the cart item's quantity
+        return await db.query('UPDATE cart_items SET quantity = $1 WHERE product_id = $2 AND cart_id = (SELECT id FROM carts WHERE user_id = $3)', [quantity, productId, userId]);
+    } else {
+        throw new Error('Item not found in the cart');
+    }
 };
 
-const deleteCartItem = async (cartItemId) => {
+
+
+const deleteCartItem = async (cartItemId, quantity, price) => {
+    const totalPriceDeletedItem = quantity * price;
+    
+    // Update the cart total to remove the deleted item's price
+    await db.query('UPDATE carts SET cart_total = cart_total - $1 WHERE id = (SELECT cart_id FROM cart_items WHERE id = $2)', [totalPriceDeletedItem, cartItemId]);
+
+    // Delete the item from the cart_items table
     return await db.query('DELETE FROM cart_items WHERE id = $1 RETURNING *', [cartItemId]);
 };
+
 
 const checkoutCart = async (cartId, userId) => {
     const cartItemsResult = await db.query('SELECT ci.product_id, ci.quantity, p.price FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.cart_id = $1', [cartId]);

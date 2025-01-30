@@ -12,6 +12,7 @@ export default function CartList() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [cartTotal, setCartTotal] = useState(0);
 
     const userId = window.location.pathname.split('/cart/')[1];
 
@@ -38,9 +39,11 @@ export default function CartList() {
         obtainCartItems();
     }, [userId]);
 
-    let cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    const totalAmount = Math.round(cartTotal * 100) / 100;
-    console.log(cartTotal);
+    // Recalculate total when cartItems changes
+    useEffect(() => {
+        const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        setCartTotal(Math.round(total * 100) / 100); // Round to 2 decimal places
+    }, [cartItems]);
 
     const cartId = cartItems.length > 0 ? cartItems[0].cart_id : null;
 
@@ -64,6 +67,34 @@ export default function CartList() {
         }
     };
 
+    const handleUpdateQuantity = async (productId, newQuantity, price) => {
+        try {
+            const response = await fetch(`https://localhost:4000/cart`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, productId, quantity: newQuantity, price}),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error updating quantity:', errorData);
+                return;
+            }
+    
+            const updatedCart = await response.json();
+            setCartItems(updatedCart); // Update cart state
+    
+            // Update the cart total
+            let newTotal = updatedCart.reduce((total, item) => total + item.price * item.quantity, 0);
+            setCartTotal(Math.round(newTotal * 100) / 100); // Update cart total
+        } catch (error) {
+            console.error('Request error:', error);
+        }
+    };
+    
+    
+
     // Render loading, error, or product list
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -73,15 +104,16 @@ export default function CartList() {
             <ul>
                 {cartItems.map((cartItem) => (
                     <li key={cartItem.id}>
-                        <CartItem cartItem={cartItem} />
+                        <CartItem cartItem={cartItem} userId={userId} onUpdateQuantity={handleUpdateQuantity} />
                     </li>
                 ))}
             </ul>
+            <div>Total: ${cartTotal}</div> {/* Render the total */}
             <button onClick={handleCheckout} disabled={cartItems.length === 0}>
                 Checkout
             </button>
             <Elements stripe={stripePromise}>
-                <CheckoutForm totalAmount={totalAmount} userId={userId} cartId={cartId} />
+                <CheckoutForm totalAmount={cartTotal} userId={userId} cartId={cartId} />
             </Elements>
         </div>
     );
