@@ -39,7 +39,8 @@ export default function CartList() {
     }, [userId]);
 
     let cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    cartTotal = Math.round(cartTotal * 100) / 100;
+    const totalAmount = Math.round(cartTotal * 100) / 100;
+    console.log(cartTotal);
 
     const cartId = cartItems.length > 0 ? cartItems[0].cart_id : null;
 
@@ -80,7 +81,7 @@ export default function CartList() {
                 Checkout
             </button>
             <Elements stripe={stripePromise}>
-                <CheckoutForm totalAmount={cartTotal} userId={userId} cartId={cartId} />
+                <CheckoutForm totalAmount={totalAmount} userId={userId} cartId={cartId} />
             </Elements>
         </div>
     );

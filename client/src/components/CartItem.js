@@ -7,7 +7,7 @@ export default function CartItem({cartItem}) {
     useEffect(() => {
         const obtainCartItems = async () => {
             try {
-                const response = await fetch(`httpsssssss://localhost:4000/home/${cartItem.product_id}`);
+                const response = await fetch(`https://localhost:4000/home/${cartItem.product_id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }
