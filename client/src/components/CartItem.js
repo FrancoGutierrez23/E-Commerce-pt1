@@ -21,6 +21,32 @@ export default function CartItem({cartItem}) {
         obtainCartItems()
     }, [cartItem])
 
+    const handleRemove = async (e) => {
+        const cartItemId = { cartItemId: cartItem.id };
+    
+        try {
+            const response = await fetch(`https://localhost:4000/cart`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cartItemId),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error deleting item:', errorData);
+                return;
+            }
+    
+            const data = await response.json();
+            console.log('Deleted:', data);
+            window.location.reload();
+        } catch (error) {
+            console.error('Request error:', error);
+        }
+    };
+    
+
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -33,6 +59,8 @@ export default function CartItem({cartItem}) {
             <span>total: ${product.price * cartItem.quantity}</span>
             <br></br>
             <span>Quantity: {cartItem.quantity}</span>
+            <br></br>
+            <button onClick={handleRemove} >Remove</button>
         </div>
     );
 }

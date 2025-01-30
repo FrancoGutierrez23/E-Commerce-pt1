@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+exports.router = router;
 const authenticateToken = require('./helpers.js');
 const cartController = require('../controllers/cartController.js');
 
