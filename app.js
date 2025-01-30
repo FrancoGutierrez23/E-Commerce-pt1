@@ -1,5 +1,7 @@
 const express = require('express');
 const session = require('express-session');
+const fs = require('fs');
+const https = require('https');
 const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
@@ -16,6 +18,11 @@ const sellRoutes = require('./routes/sell');
 const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
+
+const options = {
+  key: fs.readFileSync('./ssl/private.key'), 
+  cert: fs.readFileSync('./ssl/certificate.crt') 
+};
 
 
 app.use(bodyParser.json());
@@ -67,6 +74,6 @@ app.use('/orders', ordersRoutes);
 app.use('/checkout', checkoutRoutes);
 
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`)
+https.createServer(options, app).listen(4000, () => {
+  console.log('Server running on https://localhost:4000');
 });

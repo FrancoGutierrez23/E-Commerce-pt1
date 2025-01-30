@@ -11,7 +11,7 @@ export default function OrderList() {
         const obtainOrders = async () => {
             try {
                 const userId = window.location.pathname.split('/orders/')[1];
-                const response = await fetch(`http://localhost:4000/orders/${userId}`);
+                const response = await fetch(`https://localhost:4000/orders/${userId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch orders');
                 }

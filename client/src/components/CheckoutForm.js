@@ -11,7 +11,7 @@ export default function CheckoutForm({ totalAmount, userId, cartId }) {
     useEffect(() => {
         if (!cartId) return;
         // Fetch clientSecret from backend when the component loads
-        fetch('http://localhost:4000/checkout/create-payment-intent', {
+        fetch('https://localhost:4000/checkout/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ totalAmount, cartId }),
@@ -38,7 +38,7 @@ export default function CheckoutForm({ totalAmount, userId, cartId }) {
             console.log('Payment successful:', paymentIntent);
         
         // After successful payment, complete the checkout process
-        await fetch(`http://localhost:4000/checkout/${cartId}`, {
+        await fetch(`https://localhost:4000/checkout/${cartId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId }),

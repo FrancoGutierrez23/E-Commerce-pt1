@@ -13,7 +13,7 @@ export default function ProductFocus() {
             try {
                 const productId = window.location.pathname.split('/home/')[1];
 
-                const response = await fetch(`http://localhost:4000/home/${productId}`);
+                const response = await fetch(`https://localhost:4000/home/${productId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch product');
                 }
@@ -32,7 +32,7 @@ export default function ProductFocus() {
 
     const handleAddToCart = async (quantity) => {
         let userId;
-        const response = await fetch("http://localhost:4000/auth/status", {
+        const response = await fetch("https://localhost:4000/auth/status", {
             credentials: "include",
         });
         const data = await response.json();
@@ -41,7 +41,7 @@ export default function ProductFocus() {
         } else {
             userId = data.user.id;
             // Send fetch request to add to cart
-        fetch("http://localhost:4000/cart", {
+        fetch("https://localhost:4000/cart", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

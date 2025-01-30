@@ -8,7 +8,7 @@ export default function OrderItem({order}) {
     useEffect(() => {
         const obtainOrderItems = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/home/${order.product_id}`);
+                const response = await fetch(`https://localhost:4000/home/${order.product_id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }

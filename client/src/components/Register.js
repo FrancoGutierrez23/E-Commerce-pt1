@@ -82,7 +82,7 @@ export default function Register() {
             <button
                 type="button"
                 className="google-login"
-                onClick={() => (window.location.href = 'http://localhost:4000/auth/google')}
+                onClick={() => (window.location.href = 'https://localhost:4000/auth/google')}
             >
                 Register with Google
             </button>

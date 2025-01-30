@@ -19,7 +19,7 @@ export default function CartList() {
     useEffect(() => {
         const obtainCartItems = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/cart/${userId}`);
+                const response = await fetch(`https://localhost:4000/cart/${userId}`);
                 if (response.status === 404) {
                     throw new Error('You have not cart yet')
                 } else if (response.ok) {
@@ -46,7 +46,7 @@ export default function CartList() {
 
     const handleCheckout = async () => {
         try {
-            const response = await fetch(`http://localhost:4000/checkout/${cartItems[0]?.cart_id}`, {
+            const response = await fetch(`https://localhost:4000/checkout/${cartItems[0]?.cart_id}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId }),

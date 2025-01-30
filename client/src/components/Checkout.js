@@ -9,7 +9,7 @@ export default function Checkout() {
 
     useEffect(() => {
         if (!orderId) {
-            fetch(`http://localhost:4000/orders/${userId}/last-order`)
+            fetch(`https://localhost:4000/orders/${userId}/last-order`)
                 .then(res => res.json())
                 .then(data => setOrderId(data.orderId))
                 .catch(err => console.error("Error fetching last order:", err));

@@ -10,7 +10,7 @@ export default function ProductList() {
     useEffect(() => {
         const obtainProducts = async () => {
             try {
-                const response = await fetch('http://localhost:4000/home');
+                const response = await fetch('https://localhost:4000/home');
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }
