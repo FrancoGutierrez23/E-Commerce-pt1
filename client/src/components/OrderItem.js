@@ -12,6 +12,7 @@ export default function OrderItem({order}) {
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }
+
                 const data = await response.json();
                 setProduct(data);
             } catch(error) {
@@ -24,6 +25,31 @@ export default function OrderItem({order}) {
         obtainOrderItems()
     }, [order])
 
+    const handleCancelOrder = async() => {
+        console.log(order);
+        try {
+            const response = await fetch(`https://localhost:4000/orders`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({orderId: order.order_id})
+            })
+
+            if(!response.ok) {
+                const errorData = await response.json();
+                console.error('Error deleting order:', errorData);
+                return;
+            }
+
+            const data = await response.json();
+            console.log('Deleted:', data);
+            window.location.reload();
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
@@ -34,6 +60,8 @@ export default function OrderItem({order}) {
             <p>Quantity: {order.quantity}</p>
             <span>Total: {order.total_price}</span>
             <p>Status: {order.status}</p>
+            <p>{order.created_at}</p>
+            <button onClick={handleCancelOrder}>Cancel Order</button>
             <br></br>
         </div>
     );

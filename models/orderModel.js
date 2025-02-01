@@ -13,7 +13,8 @@ const getOrdersByUserId = async (userId) => {
             oi.id AS key
          FROM orders o
          JOIN order_items oi ON o.id = oi.order_id
-         WHERE o.user_id = $1`,
+         WHERE o.user_id = $1
+         ORDER BY created_at DESC`,
         [userId]
     );
 };
