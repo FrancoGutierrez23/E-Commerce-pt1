@@ -25,3 +25,4 @@ yarn-error.log*
 ssl/private.key
 ssl/certificate.crt
 ssl/cert.csr
+testDatabase.js

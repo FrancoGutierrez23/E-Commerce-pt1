@@ -34,6 +34,8 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
+    console.log("Database URL:", process.env.DATABASE_URL);
+
     const { username, password } = req.body;
 
     if (!username || !password) {
