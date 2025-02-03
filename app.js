@@ -6,7 +6,6 @@ const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const port = 4000;
 
 const pgSession = require('connect-pg-simple')(session);
 const db = require('./db/index');
