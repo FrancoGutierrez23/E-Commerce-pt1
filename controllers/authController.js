@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authModel = require('../models/authModel.js');
 require('dotenv').config();
@@ -34,8 +34,6 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
-    console.log("Database URL:", process.env.DATABASE_URL);
-
     const { username, password } = req.body;
 
     if (!username || !password) {
