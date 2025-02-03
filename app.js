@@ -18,9 +18,12 @@ const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
 
+const privateKey = process.env.SSL_PRIVATE_KEY;
+const certificate = process.env.SSL_CERTIFICATE;
+
 const options = {
-  key: fs.readFileSync('./etc/secrets/private.key'), 
-  cert: fs.readFileSync('./etc/secrets/certificate.crt') 
+  key: privateKey,
+    cert: certificate, 
 };
 
 app.use(bodyParser.json());
