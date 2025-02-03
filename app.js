@@ -6,7 +6,7 @@ const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-
+require("dotenv").config();
 const pgSession = require('connect-pg-simple')(session);
 const db = require('./db/index');
 
