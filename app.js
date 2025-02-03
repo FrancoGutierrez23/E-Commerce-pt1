@@ -19,8 +19,8 @@ const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
 
 const options = {
-  key: fs.readFileSync('./ssl/private.key'), 
-  cert: fs.readFileSync('./ssl/certificate.crt') 
+  key: fs.readFileSync('./etc/secrets/private.key'), 
+  cert: fs.readFileSync('./etc/secrets/certificate.crt') 
 };
 
 app.use(bodyParser.json());
