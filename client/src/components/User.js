@@ -28,7 +28,7 @@ const User = () => {
         }
 
         try {
-            const response = await fetch(`https://localhost:4000/user/${userId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

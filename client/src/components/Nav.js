@@ -8,7 +8,7 @@ export default function Nav() {
     useEffect(() => {
         const fetchUserStatus = async () => {
             try {
-                const response = await fetch('https://localhost:4000/auth/status', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
                     credentials: 'include', // Include cookies for session
                 });
                 const data = await response.json();

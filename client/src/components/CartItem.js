@@ -9,7 +9,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
     useEffect(() => {
         const obtainCartItems = async () => {
             try {
-                const response = await fetch(`https://localhost:4000/home/${cartItem.product_id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/home/${cartItem.product_id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }
@@ -27,7 +27,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
         const cartItemId = { cartItemId: cartItem.id };
     
         try {
-            const response = await fetch(`https://localhost:4000/cart`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

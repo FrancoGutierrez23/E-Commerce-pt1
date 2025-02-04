@@ -10,7 +10,7 @@ export default function Login() {
         setError('');
     
         try {
-            const response = await fetch('https://localhost:4000/auth/login', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
@@ -75,7 +75,7 @@ export default function Login() {
             <button
                 type="button"
                 className="google-login"
-                onClick={() => (window.location.href = 'https://localhost:4000/auth/google')}
+                onClick={() => (window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`)}
             >
                 Login with Google
             </button>

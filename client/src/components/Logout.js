@@ -6,7 +6,7 @@ const Logout = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('https://localhost:4000/auth/logout', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
                 method: 'GET',
                 credentials: 'include', // Ensures cookies are included in the request
             });

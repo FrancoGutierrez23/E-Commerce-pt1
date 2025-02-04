@@ -29,7 +29,7 @@ const options = {
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'https://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
 }));
 
@@ -75,6 +75,7 @@ app.use('/orders', ordersRoutes);
 app.use('/checkout', checkoutRoutes);
 
 
-https.createServer(options, app).listen(4000, () => {
-  console.log('Server running on https://localhost:4000');
+const PORT = process.env.PORT || 4000;
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

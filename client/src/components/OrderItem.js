@@ -8,7 +8,7 @@ export default function OrderItem({order}) {
     useEffect(() => {
         const obtainOrderItems = async () => {
             try {
-                const response = await fetch(`https://localhost:4000/home/${order.product_id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/home/${order.product_id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch products');
                 }
@@ -28,7 +28,7 @@ export default function OrderItem({order}) {
     const handleCancelOrder = async() => {
         console.log(order);
         try {
-            const response = await fetch(`https://localhost:4000/orders`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
