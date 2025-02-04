@@ -7,6 +7,8 @@ const cors = require('cors');
 require("dotenv").config();
 const pgSession = require('connect-pg-simple')(session);
 const db = require('./db/index');
+const path = require('path');
+
 
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
