@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-const http = require('http');
 const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
@@ -17,18 +16,17 @@ const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
 
-const privateKey = process.env.SSL_PRIVATE_KEY;
-const certificate = process.env.SSL_CERTIFICATE;
-
-const credentials = {
-  key: privateKey,
-  cert: certificate, 
-  secureProtocol: 'TLS_method',
-  ciphers: 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384',
-  honorCipherOrder: true,
-};
 
 app.use(bodyParser.json());
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -78,6 +76,6 @@ app.use('/checkout', checkoutRoutes);
 
 
 const PORT = process.env.PORT || 4000;
-http.createServer(app).listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
