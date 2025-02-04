@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-const fs = require('fs');
 const https = require('https');
 const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
@@ -21,15 +20,18 @@ const checkoutRoutes = require('./routes/checkout');
 const privateKey = process.env.SSL_PRIVATE_KEY;
 const certificate = process.env.SSL_CERTIFICATE;
 
-const options = {
+const credentials = {
   key: privateKey,
-    cert: certificate, 
+  cert: certificate, 
+  secureProtocol: 'TLS_method',
+  ciphers: 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384',
+  honorCipherOrder: true,
 };
 
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'https://localhost:3000',
   credentials: true,
 }));
 
@@ -76,6 +78,6 @@ app.use('/checkout', checkoutRoutes);
 
 
 const PORT = process.env.PORT || 4000;
-https.createServer(options, app).listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+https.createServer(credentials, app).listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on https://localhost:${PORT}`);
 });
