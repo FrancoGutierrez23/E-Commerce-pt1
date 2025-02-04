@@ -7,8 +7,6 @@ const cors = require('cors');
 require("dotenv").config();
 const pgSession = require('connect-pg-simple')(session);
 const db = require('./db/index');
-const path = require('path');
-
 
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
@@ -20,14 +18,6 @@ const checkoutRoutes = require('./routes/checkout');
 
 
 app.use(bodyParser.json());
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-  });
-}
 
 
 app.use(cors({
