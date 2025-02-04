@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-const https = require('https');
+const http = require('http');
 const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
@@ -31,7 +31,7 @@ const credentials = {
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
 }));
 
@@ -78,6 +78,6 @@ app.use('/checkout', checkoutRoutes);
 
 
 const PORT = process.env.PORT || 4000;
-https.createServer(credentials, app).listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on https://localhost:${PORT}`);
+http.createServer(app).listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

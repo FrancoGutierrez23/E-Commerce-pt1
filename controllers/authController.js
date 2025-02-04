@@ -73,7 +73,7 @@ const googleLogin = async (req, res) => {
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
 
         // Redirect to the frontend with the token as a query parameter
-        res.redirect(`https://localhost:3000/user/${user.id}?token=${token}`);
+        res.redirect(`http://localhost:3000/user/${user.id}?token=${token}`);
     } catch (error) {
         console.error('Error during Google login:', error);
         res.status(500).json({ error: 'Internal Server Error.' });
