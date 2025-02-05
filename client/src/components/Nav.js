@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 
 export default function Nav() {
     const [userId, setUserId] = useState(null);
+    const location = useLocation();
 
     useEffect(() => {
+        console.log("Fetching user status...");
+        
         const fetchUserStatus = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
@@ -22,7 +25,7 @@ export default function Nav() {
         };
 
         fetchUserStatus();
-    }, []);
+    }, [location]);
 
     return (
         <nav>
