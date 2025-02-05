@@ -19,9 +19,16 @@ const checkoutRoutes = require('./routes/checkout');
 
 app.use(bodyParser.json());
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'https://e-commerce-0ucj.onrender.com',
+  'https://e-commerce-pp.onrender.com',
+];
 
+
+console.log(process.env.FRONTEND_URL);
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: allowedOrigins,
   credentials: true,
 }));
 
