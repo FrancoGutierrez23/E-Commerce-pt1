@@ -33,6 +33,10 @@ router.get('/logout', authController.logout);
 
 // auth.js (routes)
 router.get('/status', (req, res) => {
+  console.log("Session ID:", req.sessionID);
+  console.log("Session Data:", req.session);
+  console.log("User Data:", req.user);
+  
   if (req.isAuthenticated()) {
       res.json({
           isAuthenticated: true,

@@ -25,8 +25,6 @@ const allowedOrigins = [
   'https://e-commerce-pp.onrender.com',
 ];
 
-
-console.log(process.env.FRONTEND_URL);
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
@@ -41,22 +39,13 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
       maxAge: 1000 * 60 * 60 * 10, // Session expires in 10 hours
     },
   })
 );
-
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ error: 'Unauthorized' });
-};
-
-// Example protected route
-app.get('/protected', isAuthenticated, (req, res) => {
-  res.json({ message: 'You are authenticated', user: req.user });
-});
 
 app.use(passport.initialize());
 app.use(passport.session());

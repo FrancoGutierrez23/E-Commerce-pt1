@@ -31,6 +31,7 @@ export default function Nav() {
         <nav>
             <ul style={{display: "flex", listStyle: "none", width: "300px", justifyContent: "space-between"}}>
                 <li><Link to="/home">Home</Link></li>
+                <li>{userId}</li>
                 
                 {userId ? (
                     <>
