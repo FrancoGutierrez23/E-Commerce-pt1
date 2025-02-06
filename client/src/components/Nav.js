@@ -13,7 +13,12 @@ export default function Nav() {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
                     credentials: 'include', // Include cookies for session
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
+                console.log([...response.headers.entries()]); // Log response headers
+console.log(    await response.text()); // Log response body
                 const data = await response.json();
                 console.log(data);
                 console.log(data.user.id);
