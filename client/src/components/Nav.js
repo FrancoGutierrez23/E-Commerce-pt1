@@ -15,7 +15,8 @@ export default function Nav() {
                     credentials: 'include', // Include cookies for session
                 });
                 const data = await response.json();
-
+                console.log(data);
+                console.log(data.user.id);
                 if (data.isAuthenticated) {
                     setUserId(data.user.id);
                 }
