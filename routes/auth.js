@@ -41,7 +41,7 @@ router.get('/status', authenticateToken ,(req, res) => {
       res.json({
           isAuthenticated: true,
           user: {
-              id: req.user.id
+              id: req.user.userId
           },
       });
   } else {
