@@ -11,6 +11,7 @@ export default function Nav() {
         
         const fetchUserStatus = async () => {
             const token = localStorage.getItem('token');
+            console.log(token);
             if (!token) {
                 // If no token is found, there's no authenticated user.
                 setUserId(null);
