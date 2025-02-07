@@ -21,15 +21,10 @@ export default function CartList() {
         const obtainCartItems = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`);
-                if (response.status === 404) {
-                    throw new Error('You have not cart yet')
-                } else if (response.ok) {
-                    const data = await response.json();
-                    console.log(data);
-                    setCartItems(data);
-                } else if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
+                if (response.status === 404) throw new Error('You have not cart yet');
+                if (!response.ok) throw new Error('Failed to fetch products');
+                const data = await response.json();
+                setCartItems(data);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -42,12 +37,12 @@ export default function CartList() {
     // Recalculate total when cartItems changes
     useEffect(() => {
         const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-        setCartTotal(Math.round(total * 100) / 100); // Round to 2 decimal places
+        setCartTotal(Math.round(total * 100) / 100);
     }, [cartItems]);
 
     const cartId = cartItems.length > 0 ? cartItems[0].cart_id : null;
 
-
+    // Handles cart checkout event
     const handleCheckout = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/checkout/${cartItems[0]?.cart_id}`, {
@@ -67,6 +62,7 @@ export default function CartList() {
         }
     };
 
+    // Handle quantity updates
     const handleUpdateQuantity = async (productId, newQuantity, price) => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
@@ -92,10 +88,7 @@ export default function CartList() {
             console.error('Request error:', error);
         }
     };
-    
-    
 
-    // Render loading, error, or product list
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 

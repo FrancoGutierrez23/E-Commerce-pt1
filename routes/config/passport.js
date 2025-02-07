@@ -19,16 +19,11 @@ passport.use(
                 let user = await authModel.getUserByUsername(username);
                 if (!user.rows.length) {
                     // Create a new user if not exists
-                    const result = await authModel.createUser(
-                        username,
-                        email,
-                        null // No password for third-party users
-                    );
+                    const result = await authModel.createUser(username, email, null);
                     user = result.rows[0];
                 } else {
                     user = user.rows[0];
                 }
-
                 done(null, user);
             } catch (error) {
                 done(error, null);

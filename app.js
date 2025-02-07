@@ -1,13 +1,11 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
+require("dotenv").config();
 const passport = require('./routes/config/passport');
 const bodyParser = require('body-parser');
 const app = express();
-const cors = require('cors');
-require("dotenv").config();
-const pgSession = require('connect-pg-simple')(session);
 const db = require('./db/index');
-
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
@@ -15,16 +13,11 @@ const sellRoutes = require('./routes/sell');
 const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
-
+const pgSession = require('connect-pg-simple')(session);
 
 app.use(bodyParser.json());
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000',
-  'https://e-commerce-0ucj.onrender.com',
-  'https://e-commerce-pp.onrender.com',
-];
-
+const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'https://e-commerce-0ucj.onrender.com', 'https://e-commerce-pp.onrender.com'];
 
 console.log(process.env.FRONTEND_URL);
 app.use(cors({

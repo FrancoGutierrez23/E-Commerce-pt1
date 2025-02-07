@@ -1,5 +1,6 @@
 const cartModel = require('../models/cartModel');
 
+//Checkout controller
 const checkout = async (req, res) => {
     const { cartId } = req.params;
     const { userId } = req.body;

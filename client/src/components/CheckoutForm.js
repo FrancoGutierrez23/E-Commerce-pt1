@@ -21,9 +21,9 @@ export default function CheckoutForm({ totalAmount, userId, cartId }) {
         .catch(error => console.error('Error fetching clientSecret:', error));
     }, [totalAmount, cartId]);
 
+    // Handle checkout form submits
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         if (!stripe || !elements || !clientSecret) return;
 
         const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
@@ -46,7 +46,6 @@ export default function CheckoutForm({ totalAmount, userId, cartId }) {
 
         // Redirect to orders page
         navigate(`/orders/${userId}`, { state: { orderId: paymentIntent.id } });
-            
         }
     };
 

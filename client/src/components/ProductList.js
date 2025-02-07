@@ -11,9 +11,7 @@ export default function ProductList() {
         const obtainProducts = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/home`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
+                if (!response.ok) throw new Error('Failed to fetch products');
                 const data = await response.json();
                 setProducts(data);
             } catch (err) {
@@ -26,7 +24,6 @@ export default function ProductList() {
         obtainProducts();
     }, []);
 
-    // Render loading, error, or product list
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 

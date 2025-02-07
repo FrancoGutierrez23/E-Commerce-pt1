@@ -1,9 +1,6 @@
 import React from 'react';
-//import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
-   // const navigate = useNavigate();
-
     const handleLogout = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
@@ -11,12 +8,8 @@ const Logout = () => {
                 credentials: 'include', // Ensures cookies are included in the request
             });
 
-            if (response.ok) {
-                // Redirect to the login page
-                window.location.href = '/auth/login'
-            } else {
-                console.error('Failed to log out:', response.statusText);
-            }
+            if (response.ok) window.location.href = '/auth/login';
+            console.error('Failed to log out:', response.statusText);
         } catch (error) {
             console.error('Error logging out:', error);
         }

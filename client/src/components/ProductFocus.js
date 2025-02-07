@@ -12,11 +12,8 @@ export default function ProductFocus() {
         const obtainProduct = async () => {
             try {
                 const productId = window.location.pathname.split('/home/')[1];
-
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/home/${productId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch product');
-                }
+                if (!response.ok) throw new Error('Failed to fetch product');
                 const data = await response.json();
                 setProduct(data);
             } catch (err) {
@@ -29,7 +26,7 @@ export default function ProductFocus() {
         obtainProduct();
     }, []);
     
-
+    // Handle adding items to cart
     const handleAddToCart = async (quantity) => {
         let userId;
         const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
@@ -67,10 +64,8 @@ export default function ProductFocus() {
         }
       };
 
-    // Render loading, error, or product list
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-
 
     return (
         <div>

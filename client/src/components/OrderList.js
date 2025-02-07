@@ -27,10 +27,9 @@ export default function OrderList() {
         obtainOrders();
     }, []);
 
-    // Render loading, error, or orders list
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-    console.log(orders);
+
     return (
         <ul>
             {orders.map((order) => (

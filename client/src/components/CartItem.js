@@ -5,14 +5,12 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [newQuantity, setNewQuantity] = useState(cartItem.quantity);
-
+    // Fetch cart items
     useEffect(() => {
         const obtainCartItems = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/home/${cartItem.product_id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
+                if (!response.ok) throw new Error('Failed to fetch products');
                 const data = await response.json();
                 setProduct(data);
             } catch(error) {
@@ -23,6 +21,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
         obtainCartItems()
     }, [cartItem])
 
+    // Remove cart item handler
     const handleRemove = async (e) => {
         const cartItemId = { cartItemId: cartItem.id };
     
@@ -48,6 +47,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
         }
     };
 
+    // Handle edit and save 
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -68,8 +68,6 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
             console.error(error);
         }
     };
-    
-    
 
     if (error) return <div>Error: {error}</div>;
     console.log(cartItem)

@@ -7,6 +7,7 @@ const User = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetch user profile
     useEffect(() => {
     const fetchUserProfile = async () => {
         // Check if a token is provided in the URL (for Google login)

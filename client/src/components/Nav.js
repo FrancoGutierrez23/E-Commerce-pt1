@@ -6,9 +6,8 @@ export default function Nav() {
     const [userId, setUserId] = useState(null);
     const location = useLocation();
 
+    // Verify if if user is logged
     useEffect(() => {
-        console.log("Fetching user status...");
-        
         const fetchUserStatus = async () => {
             const token = localStorage.getItem('token');
             console.log(token);
@@ -27,10 +26,7 @@ export default function Nav() {
                     }
                 });
                 const data = await response.json();
-
-                if (data.isAuthenticated) {
-                    setUserId(data.user.id);
-                }
+                if (data.isAuthenticated) setUserId(data.user.id);
             } catch (error) {
                 console.error('Error fetching user status:', error);
             }

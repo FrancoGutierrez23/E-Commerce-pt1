@@ -5,6 +5,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    // Hanlde submit event
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -20,10 +21,7 @@ export default function Login() {
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 const data = await response.json();
-    
-                if (!response.ok) {
-                    throw new Error(data.error || 'Login failed.');
-                }
+                if (!response.ok) throw new Error(data.error || 'Login failed.');
                 
                 const { user, token } = data;
 
@@ -33,7 +31,7 @@ export default function Login() {
                 // Redirect to user profile
                 window.location.href = `/user/${user.id}`;
             } else {
-                // Handle non-JSON response (e.g., HTML error page)
+                // Handle non-JSON response
                 const text = await response.text();
                 throw new Error(text || 'Unexpected response from server.');
             }

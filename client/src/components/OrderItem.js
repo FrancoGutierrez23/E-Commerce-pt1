@@ -5,14 +5,12 @@ export default function OrderItem({order}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetch all order items
     useEffect(() => {
         const obtainOrderItems = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/home/${order.product_id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-
+                if (!response.ok) throw new Error('Failed to fetch products');
                 const data = await response.json();
                 setProduct(data);
             } catch(error) {
@@ -25,6 +23,7 @@ export default function OrderItem({order}) {
         obtainOrderItems()
     }, [order])
 
+    // Handles cancel order events
     const handleCancelOrder = async() => {
         console.log(order);
         try {
@@ -44,14 +43,13 @@ export default function OrderItem({order}) {
             const data = await response.json();
             console.log('Deleted:', data);
             window.location.reload();
-
         } catch (error) {
             console.log(error);
         }
     }
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div>Error: { error }</div>;
 
     return (
         <div>

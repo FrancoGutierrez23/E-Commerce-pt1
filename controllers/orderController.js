@@ -1,24 +1,20 @@
 const orderModel = require('../models/orderModel.js');
 const db = require('../db/index.js');
 
-// Get all orders for a user
+// GET all orders for a user
 const getOrders = async (req, res) => {
     const userId = req.params.userId;
 
     try {
         const result = await orderModel.getOrdersByUserId(userId);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'User has no orders yet' });
-        }
-        res.status(200).json({
-            orders: result.rows,
-        });
+        if (result.rows.length === 0) return res.status(404).json({ error: 'User has no orders yet' });
+        res.status(200).json({ orders: result.rows });
     } catch (error) {
         res.status(500).json({ error: 'Server error. Please try again.' });
     }
 };
 
-// Make an order of a single product
+// POST an order of a single product
 const createOrder = async (req, res) => {
     const userId = req.params.userId;
     const { productId, quantity, itemPrice } = req.body;
@@ -37,7 +33,7 @@ const createOrder = async (req, res) => {
     }
 };
 
-// Alter quantity of order item
+// UPDATE quantity of order item
 const updateOrderItem = async (req, res) => {
     const { quantity, productPrice, orderId, orderItemId } = req.body;
     const updatedTotalPrice = quantity * productPrice;
@@ -45,7 +41,7 @@ const updateOrderItem = async (req, res) => {
     try {
         await orderModel.updateOrderItemQuantity(quantity, orderItemId);
         await orderModel.updateOrderTotalPrice(updatedTotalPrice, orderId);
-        const result = await db.query(`SELECT * FROM order_items WHERE id = $1;`, [orderItemId]);
+        const result = await orderModel.getOrderByOrderItemId(orderItemId);
         res.send(result.rows);
     } catch (error) {
         console.error('Database query error:', error);
@@ -53,27 +49,19 @@ const updateOrderItem = async (req, res) => {
     }
 };
 
-// Remove order
+// DELETE order
 const removeOrder = async (req, res) => {
     const { orderId } = req.body;
     console.log(req.body);
 
-    if (!orderId) {
-        return res.status(400).json({ error: 'Order ID is required for deletion.' });
-    }
+    if (!orderId) return res.status(400).json({ error: 'Order ID is required for deletion.' });
 
     try {
         const orderItemsResult = await orderModel.deleteOrderItems(orderId);
-
-        if (orderItemsResult.rows.length === 0) {
-            return res.status(404).json({ error: 'Order items not found.' });
-        }
+        if (orderItemsResult.rows.length === 0) return res.status(404).json({ error: 'Order items not found.' });
 
         await orderModel.deleteOrder(orderId);
-
-        res.status(200).json({
-            message: 'Order deleted successfully!',
-        });
+        res.status(200).json({ message: 'Order deleted successfully!' });
     } catch (error) {
         console.error('Error deleting order:', error);
         res.status(500).json({ error: 'Server error. Please try again.' });

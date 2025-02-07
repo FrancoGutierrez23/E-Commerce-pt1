@@ -1,15 +1,12 @@
 const cartModel = require('../models/cartModel.js');
 
+// GET cart items controller
 const getCart = async (req, res) => { 
     try {
-        console.log(req.params.id)
         const requestedUserId = req.params.id;
-
         const result = await cartModel.getCartItems(requestedUserId);
 
-        if (result.rows.length === 0) {
-            return res.status(404).send('You have not cart yet.');
-        }
+        if (result.rows.length === 0) return res.status(404).send('You have not cart yet.');
         res.send(result.rows);
     } catch (error) {
         console.error('Database query error:', error);
@@ -17,6 +14,7 @@ const getCart = async (req, res) => {
     }
 };
 
+// POST cart item controller
 const addToCart = async (req, res) => {
     const { userId, productId, quantity, price } = req.body;
     try {
@@ -28,26 +26,17 @@ const addToCart = async (req, res) => {
     }
 };
 
+// PUT cart item quantity controller
 const updateQuantity = async (req, res) => {
     const { userId, quantity, productId, price } = req.body;
 
-    // Validate input
-    if (!userId || !productId || quantity === undefined) {
-        return res.status(400).json({ error: 'Missing userId, productId, or quantity' });
-    }
+    if (!userId || !productId || quantity === undefined) return res.status(400).json({ error: 'Missing userId, productId, or quantity' });
 
-    if (!Number.isInteger(quantity) || quantity < 1) {
-        return res.status(400).json({ error: 'Quantity must be a positive integer' });
-    }
+    if (!Number.isInteger(quantity) || quantity < 1) return res.status(400).json({ error: 'Quantity must be a positive integer' });
 
     try {
-        // Update the cart item quantity
-        const result = await cartModel.updateItemQuantity(userId, quantity, productId, price);
-        
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: 'Cart item not found or not updated' });
-        }
-
+        const result = await cartModel.updateItemQuantity(userId, quantity, productId, price); // Update the cart item quantity
+        if (result.rowCount === 0) return res.status(404).json({ error: 'Cart item not found or not updated' });
         // Fetch updated cart items and return them
         const cartItems = await cartModel.getCartItems(userId);
         res.status(200).json(cartItems.rows);
@@ -57,20 +46,14 @@ const updateQuantity = async (req, res) => {
     }
 };
 
-
+// DELETE cart item controller
 const deleteItem = async (req, res) => {
-    const cartItemId = req.body.cartItemId.cartItemId;
     const { price, quantity } = req.body;
-    console.log(req.body)
-    if (!cartItemId) {
-        return res.status(400).json({ error: 'Cart item ID is required for deletion.' });
-    }
-
+    const cartItemId = req.body.cartItemId.cartItemId;
+    if (!cartItemId) return res.status(400).json({ error: 'Cart item ID is required for deletion.' });
     try {
         const result = await cartModel.deleteCartItem(cartItemId, quantity, price);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Cart item not found.' });
-        }
+        if (result.rows.length === 0) return res.status(404).json({ error: 'Cart item not found.' });
         res.status(200).json({ message: 'Cart item deleted successfully!' });
     } catch (error) {
         console.error('Error deleting cart item:', error);
@@ -78,6 +61,7 @@ const deleteItem = async (req, res) => {
     }
 };
 
+// Checkout cart items controller
 const checkout = async (req, res) => {
     const { cartId } = req.params;
     const { userId } = req.body;
