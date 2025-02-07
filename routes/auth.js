@@ -41,9 +41,13 @@ router.get('/status', authenticateToken ,(req, res) => {
       res.json({
           isAuthenticated: true,
           user: {
+<<<<<<< HEAD
               id: process.env.NODE_ENV === 'production'?
                 req.user.userId:
                 req.user.id
+=======
+              id: req.user.id
+>>>>>>> ae96cc3 (test)
           },
       });
   } else {
