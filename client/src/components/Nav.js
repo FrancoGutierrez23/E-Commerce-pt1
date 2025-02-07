@@ -10,9 +10,18 @@ export default function Nav() {
         console.log("Fetching user status...");
         
         const fetchUserStatus = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // If no token is found, there's no authenticated user.
+                setUserId(null);
+                return;
+            }
+
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
-                    credentials: 'include', // Include cookies for session
+                    credentials: 'include',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 });
                 const data = await response.json();
 

@@ -32,14 +32,12 @@ router.get(
 router.get('/logout', authController.logout);
 
 // auth.js (routes)
-router.get('/status', (req, res) => {
+router.get('/status', authenticateToken, (req, res) => {
   if (req.isAuthenticated()) {
       res.json({
           isAuthenticated: true,
           user: {
-              id: req.user.id,
-              username: req.user.username,
-              email: req.user.email,
+              id: req.user.userId || req.user.id,
           },
       });
   } else {

@@ -30,6 +30,7 @@ console.log(process.env.FRONTEND_URL);
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 
 app.use(
@@ -41,8 +42,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
       maxAge: 1000 * 60 * 60 * 10, // Session expires in 10 hours
     },
   })
