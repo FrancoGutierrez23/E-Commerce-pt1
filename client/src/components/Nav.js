@@ -21,8 +21,10 @@ export default function Nav() {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
                     credentials: 'include',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
                 });
                 const data = await response.json();
 
