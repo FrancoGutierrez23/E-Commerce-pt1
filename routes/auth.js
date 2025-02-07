@@ -32,7 +32,7 @@ router.get(
 router.get('/logout', authController.logout);
 
 // auth.js (routes)
-router.get('/status', (req, res) => {
+router.get('/status', authenticateToken ,(req, res) => {
   console.log("Session ID:", req.sessionID);
   console.log("Session Data:", req.session);
   console.log("User Data:", req.user);
@@ -41,9 +41,7 @@ router.get('/status', (req, res) => {
       res.json({
           isAuthenticated: true,
           user: {
-              id: req.user.id,
-              username: req.user.username,
-              email: req.user.email,
+              id: req.user.id
           },
       });
   } else {

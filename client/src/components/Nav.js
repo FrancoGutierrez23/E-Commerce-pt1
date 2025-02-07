@@ -8,6 +8,13 @@ export default function Nav() {
 
     useEffect(() => {
         console.log("Fetching user status...");
+
+        const token = localStorage.getItem('token');
+            if (!token) {
+                // If no token is found, there's no authenticated user.
+                setUserId(null);
+                return;
+            }
         
         const fetchUserStatus = async () => {
             try {
@@ -15,10 +22,10 @@ export default function Nav() {
                     credentials: 'include', // Include cookies for session
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
                     },
                 });
-                console.log([...response.headers.entries()]); // Log response headers
-console.log(    await response.text()); // Log response body
+
                 const data = await response.json();
                 console.log(data);
                 console.log(data.user.id);
