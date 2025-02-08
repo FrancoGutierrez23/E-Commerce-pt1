@@ -9,7 +9,8 @@ export default function Nav() {
 
     // Verify if if user is logged
     useEffect(() => {
-        fetchUserStatus(userId, setUserId);
+        const token = localStorage.getItem('token');
+        fetchUserStatus(userId, setUserId, token);
     }, [location, userId]);
 
     return (
