@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AddToCartModal from './modals/AddToCartModal';
+import fetchUserStatus from './utils';
 
 export default function ProductFocus() {
     const [product, setProduct] = useState([]);
+    const [userId, setUserId] = useState(null)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -25,19 +27,15 @@ export default function ProductFocus() {
 
         obtainProduct();
     }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        fetchUserStatus(userId, setUserId, token);
+    }, [userId])
     
     // Handle adding items to cart
     const handleAddToCart = async (quantity) => {
-        let userId;
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
-            credentials: "include",
-        });
-        const data = await response.json();
-        if(!data.isAuthenticated) {
-            alert("You need to register/login first.");
-        } else {
-            userId = data.user.id;
-            // Send fetch request to add to cart
+        // Send fetch request to add to cart
         fetch(`${process.env.REACT_APP_API_URL}/cart`, {
             method: "POST",
             headers: {
@@ -61,8 +59,7 @@ export default function ProductFocus() {
               console.error(err.message);
               alert("Failed to add to cart.");
             });
-        }
-      };
+    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;

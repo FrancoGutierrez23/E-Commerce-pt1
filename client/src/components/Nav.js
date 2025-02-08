@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import fetchUserStatus from './utils';
 
 
 export default function Nav() {
@@ -8,32 +9,8 @@ export default function Nav() {
 
     // Verify if if user is logged
     useEffect(() => {
-        const fetchUserStatus = async () => {
-            const token = localStorage.getItem('token');
-            console.log(token);
-            if (!token) {
-                // If no token is found, there's no authenticated user.
-                setUserId(null);
-                return;
-            }
-
-            try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-                const data = await response.json();
-                if (data.isAuthenticated) setUserId(data.user.id);
-            } catch (error) {
-                console.error('Error fetching user status:', error);
-            }
-        };
-
-        fetchUserStatus();
-    }, [location]);
+        fetchUserStatus(userId, setUserId);
+    }, [location, userId]);
 
     return (
         <nav>
