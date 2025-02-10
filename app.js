@@ -19,7 +19,6 @@ app.use(bodyParser.json());
 
 const allowedOrigins = [process.env.FRONTEND_URL || 'http://localhost:3000', 'https://e-commerce-0ucj.onrender.com', 'https://e-commerce-pp.onrender.com'];
 
-console.log(process.env.FRONTEND_URL);
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
@@ -42,16 +41,6 @@ app.use(
     },
   })
 );
-
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ error: 'Unauthorized' });
-};
-
-// Example protected route
-app.get('/protected', isAuthenticated, (req, res) => {
-  res.json({ message: 'You are authenticated', user: req.user });
-});
 
 app.use(passport.initialize());
 app.use(passport.session());

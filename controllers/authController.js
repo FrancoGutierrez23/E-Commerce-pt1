@@ -83,6 +83,11 @@ const logout = (req, res) => {
 
       req.session.destroy((destroyErr) => {
         if (destroyErr) return res.status(500).json({ error: 'Failed to destroy session.' });
+
+        res.clearCookie('connect.sid', {
+            path: '/login',
+        })
+
         res.status(200).json({ message: 'Logout successful!' });
       });
     });

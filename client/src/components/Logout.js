@@ -8,8 +8,12 @@ const Logout = () => {
                 credentials: 'include', // Ensures cookies are included in the request
             });
 
-            if (response.ok) window.location.href = '/auth/login';
-            console.error('Failed to log out:', response.statusText);
+            if (response.ok) {
+                localStorage.removeItem('token');
+                window.location.href = '/auth/login';
+            } else {
+                console.error('Failed to log out:', response.statusText);
+            }
         } catch (error) {
             console.error('Error logging out:', error);
         }
