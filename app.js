@@ -14,6 +14,9 @@ const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
 const pgSession = require('connect-pg-simple')(session);
+const helmet = require('helmet');
+
+app.set('trust proxy', true);
 
 app.use(bodyParser.json());
 
@@ -24,6 +27,14 @@ app.use(cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+    },
+  })
+);
 
 app.use(
   session({
