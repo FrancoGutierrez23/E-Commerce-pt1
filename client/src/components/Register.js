@@ -38,8 +38,10 @@ export default function Register() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="email"><b>Email</b></label>
+        <form 
+            onSubmit={handleSubmit}
+            className='max-w-md mx-auto bg-white p-6 mt-5 rounded-lg shadow-lg space-y-4'>
+            <label htmlFor="email" className='block text-gray-700 font-semibold'>Email</label>
             <input
                 type="text"
                 placeholder="Enter Email"
@@ -48,9 +50,10 @@ export default function Register() {
                 required
                 value={formData.email}
                 onChange={handleChange}
+                className='w-full px-4 py2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none' 
             />
 
-            <label htmlFor="username"><b>Username</b></label>
+            <label htmlFor="username" className='block text-gray-700 font-semibold'>Username</label>
             <input
                 type="text"
                 placeholder="Enter Username"
@@ -59,9 +62,10 @@ export default function Register() {
                 required
                 value={formData.username}
                 onChange={handleChange}
+                className='w-full px-4 py2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none' 
             />
 
-            <label htmlFor="password"><b>Password</b></label>
+            <label htmlFor="password" className='block text-gray-700 font-semibold'>Password</label>
             <input
                 type="password"
                 placeholder="Enter Password"
@@ -70,18 +74,19 @@ export default function Register() {
                 required
                 value={formData.password}
                 onChange={handleChange}
+                className='w-full px-4 py2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none' 
             />
 
-            <p>By creating an account you agree to our <a href="/">Terms & Privacy</a>.</p>
-            <button type="submit" className="registerbtn">Register</button>
+            <p className='text-gray-600 text-sm'>By creating an account you agree to our <a href="/" className='text-blue-600 hover:underline'>Terms & Privacy</a>.</p>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
+            <button type="submit" className="loginbtn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Register</button>
 
-            <hr />
+            {error && <p className='text-red-500 text-sm'>{error}</p>}
+            {success && <p className='text-green-500 text-sm'>{success}</p>}
+
             <button
                 type="button"
-                className="google-login"
+                className="google-login w-full flex items-center justify-center bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
                 onClick={() => (window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`)}
             >
                 Register with Google

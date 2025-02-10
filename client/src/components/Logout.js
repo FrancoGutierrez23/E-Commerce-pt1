@@ -20,10 +20,14 @@ const Logout = () => {
     };
 
     return (
-        <button 
-            onClick={handleLogout}>
-            Logout
-        </button>
+        <div className='flex items-center justify-center m-5 flex-wrap flex-col'>
+            <span className='text-xl'>Are you sure?</span>
+            <button 
+                onClick={handleLogout}
+                className='bg-red-600 px-3 py-1 text-white rounded-lg m-2 hover:bg-red-700 transition'>
+                Logout
+            </button>
+        </div>
     );
 };
 

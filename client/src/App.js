@@ -13,7 +13,7 @@ import Checkout from './components/Checkout.js';
 function App() {
 
   return (
-    <div className='App'>
+    <div className='App' >
       <Nav />
       <Routes>
         <Route path="/home" element={ <Home /> } />
