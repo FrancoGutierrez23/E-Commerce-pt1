@@ -7,8 +7,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const register = async (req, res) => {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password) return res.status(400).json({ error: 'All fields are required.' });
-
     try {
         // Hash password and store new user
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,6 +22,8 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
+
         if (error.code === '23505') res.status(400).json({ error: 'Username or email already exists.' });
 
         res.status(500).json({ error: 'Server error. Please try again.' });
@@ -34,8 +34,6 @@ const register = async (req, res) => {
 // Login (POST) controller
 const login = async (req, res) => {
     const { username, password } = req.body;
-
-    if (!username || !password) return res.status(400).json({ error: 'Username and password are required.' });
 
     try {
         const result = await authModel.getUserByUsername(username);
