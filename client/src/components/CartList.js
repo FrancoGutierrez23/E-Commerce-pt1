@@ -4,23 +4,28 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CartItem from './CartItem';
 import CheckoutForm from './CheckoutForm';
+import fetchUserStatus from './utils';
 
 const stripePromise = loadStripe('pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8');
 
 export default function CartList() {
     const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
+    const [userId, setUserId] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cartTotal, setCartTotal] = useState(0);
 
-    const userId = window.location.pathname.split('/cart/')[1];
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        fetchUserStatus(userId, setUserId, token);
+    }, [userId])
 
     // Fetch products when the component mounts
     useEffect(() => {
         const obtainCartItems = async () => {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/cart/${window.location.pathname.split('/cart/')[1]}`);
                 if (response.status === 404) throw new Error('You have not cart yet');
                 if (!response.ok) throw new Error('Failed to fetch products');
                 const data = await response.json();
