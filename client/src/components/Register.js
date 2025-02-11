@@ -24,9 +24,9 @@ export default function Register() {
                 setSuccess('Registration successful!');
                 setError('');
 
-                const { user, token } = data;
+                const { token } = data;
                 localStorage.setItem('token', token); // Save JWT token
-                window.location.href = `/user/${user.id}`; // Redirect to home
+                window.location.href = `/home`; // Redirect to home
             } else {
                 setError(data.error || 'Registration failed.');
                 setSuccess('');

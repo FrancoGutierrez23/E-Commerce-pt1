@@ -23,13 +23,13 @@ export default function Login() {
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.error || 'Login failed.');
                 
-                const { user, token } = data;
+                const { token } = data;
 
                 // Save the token to localStorage
                 localStorage.setItem('token', token);
     
-                // Redirect to user profile
-                window.location.href = `/user/${user.id}`;
+                // Redirect to user home
+                window.location.href = `/home`;
             } else {
                 // Handle non-JSON response
                 const text = await response.text();
@@ -71,6 +71,7 @@ export default function Login() {
             {error && <p className='text-red-500 text-sm'>{error}</p>}
 
             <p className='text-gray-600 text-sm'>Don't have an account? <a href="/auth/register" className='text-blue-600 hover:underline'>Register</a>.</p>
+            
             <button type="submit" className="loginbtn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Login</button>
 
             <hr />

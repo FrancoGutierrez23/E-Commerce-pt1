@@ -1,4 +1,5 @@
-import  { Routes, Route } from 'react-router-dom';
+import  { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './components/Nav.js';
 import Home from './components/Home.js';
 import CartList from './components/CartList.js';
 import Login from './components/Login.js';
@@ -13,9 +14,10 @@ import Checkout from './components/Checkout.js';
 function App() {
 
   return (
-    <div className='App' >
+    <AuthProvider >
       <Nav />
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={ <Home /> } />
         <Route path="/home/:id" element={ <ProductFocus /> } />
         <Route path="/cart/:id" element={ <CartList /> } />
@@ -26,7 +28,7 @@ function App() {
         <Route path='/orders/:userId' element={ <OrderList /> } />
         <Route path="/checkout" element={ <Checkout /> } />
       </Routes>
-   </div>
+   </AuthProvider>
   );
 }
 

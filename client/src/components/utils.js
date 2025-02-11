@@ -14,7 +14,12 @@ const fetchUserStatus = async (userId, setUserId, token) => {
             }
         });
         const data = await response.json();
-        if (data.isAuthenticated) setUserId(data.user.id);
+        if (data.isAuthenticated){
+            setUserId(data.user.id);
+            return true;
+        } else {
+            return null;
+        }
     } catch (error) {
         console.error('Error fetching user status:', error);
     }
