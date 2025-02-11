@@ -63,11 +63,25 @@ const User = () => {
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
     return (
-        <div>
-            <h1>User Profile</h1>
-            <p><strong>ID:</strong> {manageId()}</p>
-            <p><strong>Username:</strong> {user.username}</p>
-            <p><strong>Email:</strong> {user.email}</p>
+        <div className='max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mt-6'>
+            <h2 className='text-2xl font-bold text-gray-800 mb-4'>Welcome {user.username}</h2>
+            <div className="space-y-2">
+                <p className="text-gray-700">
+                    <strong className="font-semibold">Username:</strong> {user.username}
+                </p>
+                <p className="text-gray-700">
+                    <strong className="font-semibold">Email:</strong> {user.email}
+                </p>
+                <p className="text-gray-700">
+                    <strong className="font-semibold">Address:</strong> 4508 Old Dear Lane, Port Devis, NY
+                </p>
+                <p className="text-gray-700">
+                    <strong className="font-semibold">Zipcode:</strong> 12771
+                </p>
+                <p className="text-gray-700">
+                    <strong className="font-semibold">Phone number:</strong> 347-200-4971
+                </p>
+            </div>
         </div>
     );
 };

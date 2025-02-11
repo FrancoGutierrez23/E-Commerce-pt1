@@ -72,32 +72,57 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            <br></br>
-            <h4 href={`/home/${product.id}`}>{product.name}</h4>
-            <br></br>
-            <img alt={product.name} src={product.image_url} style={{height: '150px', width: '150px'}} ></img>
-            <br></br>
-            <span>total: ${Math.round(product.price * cartItem.quantity)}</span>
-            <br></br>
-            {isEditing ? (
-                <>
-                    <input 
-                        type="number" 
-                        value={newQuantity} 
-                        onChange={(e) => setNewQuantity(Number(e.target.value))}
-                        min="1"
-                    />
-                    <button onClick={handleSaveClick}>Save</button>
-                </>
-            ) : (
-                <>
-                    <span>Quantity: {cartItem.quantity}</span>
-                    <button onClick={handleEditClick}>Edit Quantity</button>
-                </>
-            )}
-            <br></br>
-            <button onClick={handleRemove} >Remove</button>
-        </div>
+        <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg mb-4">
+  <div className="flex items-center space-x-4">
+    <img
+      alt={product.name}
+      src={product.image_url}
+      className="h-24 w-24 object-cover rounded-md"
+    />
+    <div>
+      <h4 className="text-lg font-semibold text-gray-800">
+        <a href={`/home/${product.id}`} className="hover:underline">{product.name}</a>
+      </h4>
+      <span className="text-gray-600">Total: ${Math.round(product.price * cartItem.quantity)}</span>
+    </div>
+  </div>
+
+  <div className="flex items-center space-x-4">
+    {isEditing ? (
+      <>
+        <input
+          type="number"
+          value={newQuantity}
+          onChange={(e) => setNewQuantity(Number(e.target.value))}
+          min="1"
+          className="w-16 px-2 py-1 border border-gray-300 rounded-md"
+        />
+        <button
+          onClick={handleSaveClick}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
+          Save
+        </button>
+      </>
+    ) : (
+      <>
+        <span className="text-gray-700">Quantity: {cartItem.quantity}</span>
+        <button
+          onClick={handleEditClick}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+        >
+          Edit Quantity
+        </button>
+      </>
+    )}
+
+    <button
+      onClick={handleRemove}
+      className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+    >
+      Remove
+    </button>
+  </div>
+</div>
     );
 }

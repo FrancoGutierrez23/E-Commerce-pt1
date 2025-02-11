@@ -98,21 +98,44 @@ export default function CartList() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            <ul>
-                {cartItems.map((cartItem) => (
-                    <li key={cartItem.id}>
-                        <CartItem cartItem={cartItem} userId={userId} onUpdateQuantity={handleUpdateQuantity} />
-                    </li>
-                ))}
-            </ul>
-            <div>Total: ${cartTotal}</div> {/* Render the total */}
-            <button onClick={handleCheckout} disabled={cartItems.length === 0}>
-                Checkout
+        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <ul className="space-y-4">
+            {cartItems.map((cartItem) => (
+            <li key={cartItem.id} className="border-b border-gray-300 pb-4">
+                <CartItem
+                cartItem={cartItem}
+                userId={userId}
+                onUpdateQuantity={handleUpdateQuantity}
+                />
+            </li>
+            ))}
+        </ul>
+
+        <div className="mt-6 text-lg font-semibold text-gray-800">
+            Total: ${cartTotal}
+        </div>
+
+        <div className="mt-4 flex flex-col justify-between items-center">
+            <button
+            onClick={handleCheckout}
+            disabled={cartItems.length === 0}
+            className={`px-6 py-3 text-white font-semibold rounded-md transition ${
+                cartItems.length === 0
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700'
+            }`}
+            >
+            Checkout
             </button>
+
             <Elements stripe={stripePromise}>
-                <CheckoutForm totalAmount={cartTotal} userId={userId} cartId={cartId} />
+            <CheckoutForm
+                totalAmount={cartTotal}
+                userId={userId}
+                cartId={cartId}
+            />
             </Elements>
+        </div>
         </div>
     );
 }

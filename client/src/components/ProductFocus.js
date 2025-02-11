@@ -65,23 +65,38 @@ export default function ProductFocus() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            <br></br>
-            <img alt={product.name} src={product.image_url} style={{height: '150px', width: '150px'}} ></img>
-            <br></br>
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <span>${product.price}</span>
-            <button>Buy</button>
-            <button onClick={() => setModalOpen(true)}>Add to cart</button>
+      <section className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
+        <figure className="flex justify-center">
+          <img
+            alt={product.name}
+            src={product.image_url}
+            className="h-40 w-40 object-cover rounded-md"
+          />
+        </figure>
+        
+        <h2 className="mt-4 text-2xl font-bold text-gray-800">{product.name}</h2>
+        <p className="mt-2 text-gray-700">{product.description}</p>
+        <span className="mt-3 block text-xl font-semibold text-green-600">${product.price}</span>
 
-            {isModalOpen && (
-                <AddToCartModal
-                    product={product}
-                    onClose={() => setModalOpen(false)}
-                    onConfirm={handleAddToCart}
-                />
-            )}
+        <div className="mt-4 flex space-x-4">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+            Buy
+          </button>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+          >
+            Add to cart
+          </button>
         </div>
+
+        {isModalOpen && (
+          <AddToCartModal
+            product={product}
+            onClose={() => setModalOpen(false)}
+            onConfirm={handleAddToCart}
+          />
+        )}
+      </section>
     )
 };

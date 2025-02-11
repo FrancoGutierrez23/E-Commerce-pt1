@@ -52,15 +52,30 @@ export default function OrderItem({order}) {
     if (error) return <div>Error: { error }</div>;
 
     return (
-        <div>
-            <img alt={product.name} src={product.image_url} style={{height: '150px', width: '150px'}}></img>
-            <p>{product.name}</p>
-            <p>Quantity: {order.quantity}</p>
-            <span>Total: {order.total_price}</span>
-            <p>Status: {order.status}</p>
-            <p>{order.created_at}</p>
-            <button onClick={handleCancelOrder}>Cancel Order</button>
-            <br></br>
+        <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg mb-4">
+        <div className="flex items-center space-x-4">
+            <img
+            alt={product.name}
+            src={product.image_url}
+            className="h-24 w-24 object-cover rounded-md"
+            />
+            <div>
+            <p className="text-lg font-semibold text-gray-800">{product.name}</p>
+            <p className="text-gray-600">Quantity: {order.quantity}</p>
+            <span className="text-sm text-gray-800 font-semibold">Total: ${order.total_price}</span>
+            <p className="text-sm text-gray-500">Status: {order.status}</p>
+            <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
+            </div>
+        </div>
+
+        <div className="flex items-center space-x-4">
+            <button
+            onClick={handleCancelOrder}
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+            >
+            Cancel Order
+            </button>
+        </div>
         </div>
     );
 };

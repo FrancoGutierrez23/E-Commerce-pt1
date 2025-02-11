@@ -50,11 +50,32 @@ export default function CheckoutForm({ totalAmount, userId, cartId }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <CardElement />
-            <button type="submit" disabled={!stripe || !elements}>
-                Pay ${totalAmount}
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full mx-auto">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Checkout</h2>
+
+        <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Payment Information
+            </label>
+            <div className="border p-4 rounded-md">
+            <CardElement className="p-2" />
+            </div>
+        </div>
+
+        <div className="flex justify-between items-center mt-6">
+            <span className="text-lg font-semibold text-gray-800">Total: ${totalAmount}</span>
+            <button
+            type="submit"
+            disabled={!stripe || !elements}
+            className={`px-6 py-3 text-white font-semibold rounded-md transition ${
+                !stripe || !elements
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700'
+            }`}
+            >
+            Pay ${totalAmount}
             </button>
+        </div>
         </form>
     );
 }

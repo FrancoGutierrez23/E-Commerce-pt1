@@ -31,12 +31,15 @@ export default function OrderList() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <ul>
-            {orders.map((order) => (
-                <li key={order.key}>
-                    <OrderItem order={order} ></OrderItem>
-                </li>
-            ))}
-        </ul>
+        <section className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Orders</h2>
+            <ul className='space-y-6'>
+                {orders.map((order) => (
+                    <li key={order.key} className='border-b border-gray-300 pb-6'>
+                        <OrderItem order={order} ></OrderItem>
+                    </li>
+                ))}
+            </ul>
+        </section>
     );
 }
