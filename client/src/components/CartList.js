@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CartItem from './CartItem';
@@ -9,7 +8,6 @@ import fetchUserStatus from './utils';
 const stripePromise = loadStripe('pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8');
 
 export default function CartList() {
-    const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
     const [userId, setUserId] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -46,27 +44,6 @@ export default function CartList() {
     }, [cartItems]);
 
     const cartId = cartItems.length > 0 ? cartItems[0].cart_id : null;
-
-    // Handles cart checkout event
-    const handleCheckout = async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/checkout/${cartItems[0]?.cart_id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                navigate(`/orders/${userId}`, { state: { orderId: data.orderId } })
-            } else {
-                setError('Failed to process checkout. Please try again.');
-            }
-        } catch (error) {
-            setError('An error occurred during checkout.');
-        }
-    };
-
     // Handle quantity updates
     const handleUpdateQuantity = async (productId, newQuantity, price) => {
         try {
@@ -116,18 +93,6 @@ export default function CartList() {
         </div>
 
         <div className="mt-4 flex flex-col justify-between items-center">
-            <button
-            onClick={handleCheckout}
-            disabled={cartItems.length === 0}
-            className={`px-6 py-3 text-white font-semibold rounded-md transition ${
-                cartItems.length === 0
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700'
-            }`}
-            >
-            Checkout
-            </button>
-
             <Elements stripe={stripePromise}>
             <CheckoutForm
                 totalAmount={cartTotal}
