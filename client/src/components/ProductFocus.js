@@ -79,18 +79,20 @@ export default function ProductFocus() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-      <section className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6 relative">
-      <figure className="flex justify-center">
-        <img
-          alt={product.name}
-          src={product.image_url}
-          className="h-40 w-40 object-cover rounded-md"
-        />
-      </figure>
-      
-      <h2 className="mt-4 text-2xl font-bold text-gray-800">{product.name}</h2>
-      <p className="mt-2 text-gray-700">{product.description}</p>
-      <span className="mt-3 block text-xl font-semibold text-green-600">${product.price}</span>
+      <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 relative flex flex-wrap justify-between">
+          <figure className="flex justify-start w-2/3">
+            <img
+              alt={product.name}
+              src={product.image_url}
+              className="w-11/12 object-cover rounded-md"
+            />
+          </figure>
+          
+          <div className='flex flex-col w-1/3'>
+            <h2 className="mt-1 text-2xl font-bold text-gray-800">{product.name}</h2>
+            <p>Stock: {product.stock_quantity}</p>
+            <span className="mt-3 block text-xl font-semibold text-green-600">${product.price}</span>
+          </div>
 
       <div className="mt-4 flex space-x-4">
         {/* When Buy is clicked, open the Direct Purchase modal */}
@@ -98,7 +100,7 @@ export default function ProductFocus() {
           onClick={() => setBuyModalOpen(true)}
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
-          Buy
+          Buy now
         </button>
         <button
           onClick={() => setCartModalOpen(true)}
@@ -107,6 +109,8 @@ export default function ProductFocus() {
           Add to cart
         </button>
       </div>
+
+      <p className="mt-2 text-gray-700">Description: <br></br>{product.description}</p>
 
       {isCartModalOpen && (
         <AddToCartModal
@@ -136,9 +140,9 @@ export default function ProductFocus() {
           <div className="bg-white rounded-lg p-6 w-full max-w-lg relative">
             <button
               onClick={() => setDirectCheckoutOpen(false)}
-              className="absolute top-2 right-2 text-red-500"
+              className="absolute top-2 right-2 text-red-500 text-xl font-bold"
             >
-              Close
+              X
             </button>
             <Elements stripe={stripePromise}>
             <DirectCheckoutForm
