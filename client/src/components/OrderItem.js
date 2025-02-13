@@ -62,7 +62,7 @@ export default function OrderItem({order}) {
             <div>
             <p className="text-lg font-semibold text-gray-800">{product.name}</p>
             <p className="text-gray-600">Quantity: {order.quantity}</p>
-            <span className="text-sm text-gray-800 font-semibold">Total: ${order.total_price}</span>
+            <span className="text-sm text-gray-800 font-semibold">Total: {order.total_price}</span>
             <p className="text-sm text-gray-500">Status: {order.status}</p>
             <p className="text-sm text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
             </div>

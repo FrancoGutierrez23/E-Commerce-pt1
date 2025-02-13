@@ -29,8 +29,8 @@ export default function Nav() {
     const { userId } = useContext(AuthContext);
 
     return (
-        <nav className="bg-gray-900 p-4 shadow-lg">
-            <ul className="flex items-center justify-between max-w-4xl mx-auto text-white">
+        <nav className="bg-gray-900 p-4 shadow-lg mb-5">
+            <ul className="flex items-center justify-between mx-auto text-white">
                 <div className="flex space-x-5">
                     <li><Link to="/home" className="hover:text-gray-300 transition">Home</Link></li>
 

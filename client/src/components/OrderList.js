@@ -28,7 +28,7 @@ export default function OrderList() {
     }, []);
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div className='flex justify-around text-2xl w-full text-gray-700 font-semibold'>You have not orders yet.</div>;
 
     return (
         <section className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">

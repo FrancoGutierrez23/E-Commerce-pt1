@@ -72,7 +72,7 @@ export default function CartList() {
     };
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div className='flex justify-around text-2xl w-full text-gray-700 font-semibold'>{ error }</div>;
 
     return (
         <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
