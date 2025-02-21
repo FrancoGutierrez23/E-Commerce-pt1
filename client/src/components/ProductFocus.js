@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import RatingsDistribution from './RatingsDistribution';
 import AddToCartModal from './modals/AddToCartModal';
 import DirectPurchaseModal from './modals/DirectPurchaseModal';
 import DirectCheckoutForm from './DirectCheckoutForm';
@@ -13,6 +14,7 @@ export default function ProductFocus() {
     const [userId, setUserId] = useState(null)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [ratings, setRatings] = useState({ distribution: [], average: 0 });
 
     // For Add to cart option
     const [isCartModalOpen, setCartModalOpen] = useState(false);
@@ -22,6 +24,7 @@ export default function ProductFocus() {
     const [directPurchaseQuantity, setDirectPurchaseQuantity] = useState(null);
     const [isDirectCheckoutOpen, setDirectCheckoutOpen] = useState(false);
 
+    const productId = window.location.pathname.split('/home/')[1];
 
     // Fetch product when the component mounts
     useEffect(() => {
@@ -41,6 +44,24 @@ export default function ProductFocus() {
 
         obtainProduct();
     }, []);
+
+    // Fetch ratings data for the product
+  useEffect(() => {
+    const fetchRatings = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/ratings/${productId}`);
+        if (!response.ok) throw new Error('Failed to fetch ratings');
+        const ratingsData = await response.json();
+        setRatings(ratingsData);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    if (productId) {
+      fetchRatings();
+    }
+  }, [productId]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -91,6 +112,7 @@ export default function ProductFocus() {
           <div className='flex flex-col w-1/3'>
             <h2 className="mt-1 text-2xl font-bold text-gray-800">{product.name}</h2>
             <p>Stock: {product.stock_quantity}</p>
+            <p className='text-gray-500'>{product.quantity_sold === 0? `Not sells yet` : `${product.quantity_sold} sold`}</p>
             <span className="mt-3 block text-xl font-semibold text-green-600">${product.price}</span>
           </div>
 
@@ -111,6 +133,12 @@ export default function ProductFocus() {
       </div>
 
       <p className="mt-2 text-gray-700">Description: <br></br>{product.description}</p>
+
+      {/* Ratings Section */}
+      <RatingsDistribution
+        distribution={ratings.distribution}
+        average={ratings.average}
+      />
 
       {isCartModalOpen && (
         <AddToCartModal
