@@ -1,8 +1,8 @@
 const ratingsModel = require('../models/ratingsModel.js');
   
-  /**
-   * Controller to get rating distribution + average rating for a product
-   */
+
+// GET rating distribution + average rating for a product
+
   const getRatings = async (req, res) => {
     const { productId } = req.params;
   
@@ -22,9 +22,8 @@ const ratingsModel = require('../models/ratingsModel.js');
     }
   };
   
-  /**
-   * Controller to add a new rating
-   */
+
+// Add a new rating
   const createRating = async (req, res) => {
     const { productId, rating } = req.body;
   

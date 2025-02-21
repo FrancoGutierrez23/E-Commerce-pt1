@@ -1,4 +1,3 @@
-// RatingsDistribution.js
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +13,7 @@ export default function RatingsDistribution({ distribution, average }) {
   const starRatings = [5, 4, 3, 2, 1];
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-3/4">
       <h3 className="text-lg font-semibold">Reviews</h3>
       <p>
         Average Rating: {Number(average).toFixed(1)}/5{' '} 

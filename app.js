@@ -13,7 +13,8 @@ const sellRoutes = require('./routes/sell');
 const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
 const checkoutRoutes = require('./routes/checkout');
-const ratingsRoutes = require('./routes/ratings')
+const ratingsRoutes = require('./routes/ratings');
+const detailsRoutes = require('./routes/detailsTable');
 const pgSession = require('connect-pg-simple')(session);
 const helmet = require('helmet');
 
@@ -69,6 +70,7 @@ app.use('/cart', cartRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/checkout', checkoutRoutes);
 app.use('/ratings', ratingsRoutes);
+app.use('/details', detailsRoutes);
 
 
 const PORT = process.env.PORT || 4000;

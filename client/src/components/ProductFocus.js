@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RatingsDistribution from './RatingsDistribution';
+import DetailsTable from './DetailsTable';
 import AddToCartModal from './modals/AddToCartModal';
 import DirectPurchaseModal from './modals/DirectPurchaseModal';
 import DirectCheckoutForm from './DirectCheckoutForm';
@@ -138,7 +139,10 @@ export default function ProductFocus() {
       <RatingsDistribution
         distribution={ratings.distribution}
         average={ratings.average}
+        className='w-full'
       />
+
+      <DetailsTable productId={productId} />
 
       {isCartModalOpen && (
         <AddToCartModal
