@@ -72,7 +72,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg mb-4">
+        <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg mb-4 flex-wrap">
   <div className="flex items-center space-x-4">
     <img
       alt={product.name}

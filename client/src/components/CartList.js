@@ -71,7 +71,7 @@ export default function CartList() {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className='p-20 text-gray-500 text-lg'>Fetching cart products...</div>;
     if (error) return <div className='flex justify-around text-2xl w-full text-gray-700 font-semibold'>{ error }</div>;
 
     return (

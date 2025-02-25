@@ -27,7 +27,7 @@ export default function OrderList() {
         obtainOrders();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className='pt-20'>Loading...</div>;
     if (error) return <div className='flex justify-around text-2xl w-full text-gray-700 font-semibold'>You have not orders yet.</div>;
 
     return (

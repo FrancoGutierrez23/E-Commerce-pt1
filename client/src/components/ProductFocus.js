@@ -97,11 +97,11 @@ export default function ProductFocus() {
             });
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className='p-20 text-gray-500 text-lg'>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
-      <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 relative flex flex-wrap justify-between">
+      <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 pt-20 relative flex flex-wrap justify-between">
           <figure className="flex justify-start w-2/3">
             <img
               alt={product.name}

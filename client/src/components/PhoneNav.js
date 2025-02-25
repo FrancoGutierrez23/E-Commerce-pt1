@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "./Nav"; // Adjust the import path if you export AuthContext from a separate file
+import { AuthContext } from "./Nav";
 import { faHome, faShoppingCart, faUser, faSignOut, faEnvelopeCircleCheck, faSignIn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

@@ -24,7 +24,7 @@ export default function ProductList() {
         obtainProducts();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className='p-20 text-gray-500 text-lg'>Loading products...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
