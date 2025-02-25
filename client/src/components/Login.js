@@ -43,7 +43,7 @@ export default function Login() {
     return (
         <form 
         onSubmit={handleSubmit}
-        className='max-w-md mx-auto bg-white p-6 mt-5 rounded-lg shadow-lg space-y-4'>
+        className='max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg space-y-4 pt-20'>
             <label htmlFor="username" className='block text-gray-700 font-semibold'>Username</label>
             <input
                 type="text"

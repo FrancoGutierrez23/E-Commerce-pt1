@@ -20,7 +20,7 @@ const Logout = () => {
     };
 
     return (
-        <div className='flex items-center justify-center m-5 flex-wrap flex-col'>
+        <div className='flex items-center justify-center p-32 flex-wrap flex-col'>
             <span className='text-xl'>Are you sure?</span>
             <button 
                 onClick={handleLogout}

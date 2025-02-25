@@ -10,12 +10,15 @@ import User from './components/User.js';
 import ProductFocus from './components/ProductFocus.js';
 import OrderList from './components/OrderList.js';
 import Checkout from './components/Checkout.js';
+import PhoneNav from "./components/PhoneNav";
+import useMediaQuery from "./components/customHooks.js";
 
 function App() {
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
     <AuthProvider >
-      <Nav />
+      {isMobile ? <PhoneNav /> : <Nav />}
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={ <Home /> } />

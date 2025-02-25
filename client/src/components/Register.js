@@ -40,7 +40,7 @@ export default function Register() {
     return (
         <form 
             onSubmit={handleSubmit}
-            className='max-w-md mx-auto bg-white p-6 mt-5 rounded-lg shadow-lg space-y-4'>
+            className='max-w-md mx-auto bg-white p-6 pt-20 rounded-lg shadow-lg space-y-4'>
             <label htmlFor="email" className='block text-gray-700 font-semibold'>Email</label>
             <input
                 type="text"

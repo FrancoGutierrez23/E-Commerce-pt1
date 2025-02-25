@@ -63,7 +63,7 @@ const User = () => {
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
     return (
-        <div className='max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mt-6'>
+        <div className='max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 pt-20'>
             <h2 className='text-2xl font-bold text-gray-800 mb-4'>Welcome {user.username}</h2>
             <div className="space-y-2">
                 <p className="text-gray-700">

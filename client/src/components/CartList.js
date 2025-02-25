@@ -75,7 +75,7 @@ export default function CartList() {
     if (error) return <div className='flex justify-around text-2xl w-full text-gray-700 font-semibold'>{ error }</div>;
 
     return (
-        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg pt-20">
         <ul className="space-y-4">
             {cartItems.map((cartItem) => (
             <li key={cartItem.id} className="border-b border-gray-300 pb-4">
