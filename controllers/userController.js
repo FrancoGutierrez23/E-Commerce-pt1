@@ -3,7 +3,6 @@ const userModel = require('../models/userModel.js');
 // GET a user by ID
 const getUserById = async (req, res) => {
     try {
-        console.log(req.params.userId)
         const tokenUserId = req.user.userId; // The user ID from the verified token
         const requestedUserId = req.params.userId;
 

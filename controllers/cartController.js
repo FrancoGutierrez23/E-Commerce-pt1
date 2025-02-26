@@ -21,7 +21,6 @@ const addToCart = async (req, res) => {
         const result = await cartModel.addItemToCart(userId, productId, quantity, price);
         res.send(result.rows);
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: 'Server error. Please try again.' });
     }
 };

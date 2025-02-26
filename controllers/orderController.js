@@ -29,7 +29,6 @@ const createOrder = async (req, res) => {
         res.send(result.rows);
     } catch (error) {
         res.status(500).json({ error: 'Server error. Please try again.' });
-        console.log(error);
     }
 };
 
@@ -52,7 +51,6 @@ const updateOrderItem = async (req, res) => {
 // DELETE order
 const removeOrder = async (req, res) => {
     const { orderId } = req.body;
-    console.log(req.body);
 
     if (!orderId) return res.status(400).json({ error: 'Order ID is required for deletion.' });
 

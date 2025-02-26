@@ -1,8 +1,16 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Nav";
-import { faHome, faShoppingCart, faUser, faSignOut, faEnvelopeCircleCheck, faSignIn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faHome,
+  faShoppingCart,
+  faUser,
+  faSignOut,
+  faEnvelopeCircleCheck,
+  faSignIn,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function PhoneNav() {
   const { userId } = useContext(AuthContext);
@@ -13,19 +21,6 @@ export default function PhoneNav() {
   return (
     <nav className="bg-gray-900 p-4 shadow-lg mb-5 fixed w-full z-10">
       <div className="flex justify-between items-center">
-        {/* Home Link */}
-        <Link to="/home" className="text-white text-lg">
-          <FontAwesomeIcon icon={faHome} /> Home
-        </Link>
-
-        <Link
-                  to={`/cart/${userId}`}
-                  className="block text-white hover:text-gray-300 transition"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <FontAwesomeIcon icon={faShoppingCart} /> Cart
-                </Link>
-
         {/* Hamburger Icon */}
         <button onClick={toggleMenu} className="text-white focus:outline-none">
           <svg
@@ -54,6 +49,29 @@ export default function PhoneNav() {
             )}
           </svg>
         </button>
+
+        {/* Home Link */}
+        <Link to="/home" className="text-white text-lg">
+          <FontAwesomeIcon icon={faHome} /> Home
+        </Link>
+
+        {userId ? (
+          <Link
+            to={`/cart/${userId}`}
+            className="block text-white hover:text-gray-300 transition"
+            onClick={() => setMenuOpen(false)}
+          >
+            <FontAwesomeIcon icon={faShoppingCart} /> Cart
+          </Link>
+        ) : (
+          <Link
+            to="/auth/login"
+            className="block text-white hover:text-gray-300 transition"
+            onClick={() => setMenuOpen(false)}
+          >
+            <FontAwesomeIcon icon={faSignIn} /> Login
+          </Link>
+        )}
       </div>
 
       {/* Dropdown Menu */}
@@ -97,7 +115,7 @@ export default function PhoneNav() {
                   className="block text-white hover:text-gray-300 transition"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Login
+                  <FontAwesomeIcon icon={faSignIn} /> Login
                 </Link>
               </li>
               <li>
@@ -106,7 +124,7 @@ export default function PhoneNav() {
                   className="block bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Register
+                  <FontAwesomeIcon icon={faUserPlus} /> Register
                 </Link>
               </li>
             </>

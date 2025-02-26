@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 export default function DetailsTable({ productId }) {
   const [details, setDetails] = useState(null);
@@ -8,9 +8,11 @@ export default function DetailsTable({ productId }) {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/details/${productId}`);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/details/${productId}`
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch product details');
+          throw new Error("Failed to fetch product details");
         }
         const data = await response.json();
         setDetails(data);
@@ -54,7 +56,7 @@ export default function DetailsTable({ productId }) {
           <tr className="border-b">
             <td className="px-4 py-2 font-medium">Warranty</td>
             <td className="px-4 py-2">
-              {details.warranty ? details.warranty : 'No warranty'}
+              {details.warranty ? details.warranty : "No warranty"}
             </td>
           </tr>
           {details.main_material && (

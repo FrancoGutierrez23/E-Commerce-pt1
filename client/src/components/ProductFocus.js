@@ -1,57 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import RatingsDistribution from './RatingsDistribution';
-import DetailsTable from './DetailsTable';
-import AddToCartModal from './modals/AddToCartModal';
-import DirectPurchaseModal from './modals/DirectPurchaseModal';
-import DirectCheckoutForm from './DirectCheckoutForm';
-import fetchUserStatus from './utils';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import React, { useState, useEffect } from "react";
+import RatingsDistribution from "./RatingsDistribution";
+import DetailsTable from "./DetailsTable";
+import AddToCartModal from "./modals/AddToCartModal";
+import DirectPurchaseModal from "./modals/DirectPurchaseModal";
+import DirectCheckoutForm from "./DirectCheckoutForm";
+import fetchUserStatus from "./utils";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe('pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8');
+const stripePromise = loadStripe(
+  "pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8"
+);
 
 export default function ProductFocus() {
-    const [product, setProduct] = useState([]);
-    const [userId, setUserId] = useState(null)
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [ratings, setRatings] = useState({ distribution: [], average: 0 });
+  const [product, setProduct] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [ratings, setRatings] = useState({ distribution: [], average: 0 });
 
-    // For Add to cart option
-    const [isCartModalOpen, setCartModalOpen] = useState(false);
+  // For Add to cart option
+  const [isCartModalOpen, setCartModalOpen] = useState(false);
 
-    // For Buy option
-    const [isBuyModalOpen, setBuyModalOpen] = useState(false);
-    const [directPurchaseQuantity, setDirectPurchaseQuantity] = useState(null);
-    const [isDirectCheckoutOpen, setDirectCheckoutOpen] = useState(false);
+  // For Buy option
+  const [isBuyModalOpen, setBuyModalOpen] = useState(false);
+  const [directPurchaseQuantity, setDirectPurchaseQuantity] = useState(null);
+  const [isDirectCheckoutOpen, setDirectCheckoutOpen] = useState(false);
 
-    const productId = window.location.pathname.split('/home/')[1];
+  const productId = window.location.pathname.split("/home/")[1];
 
-    // Fetch product when the component mounts
-    useEffect(() => {
-        const obtainProduct = async () => {
-            try {
-                const productId = window.location.pathname.split('/home/')[1];
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/home/${productId}`);
-                if (!response.ok) throw new Error('Failed to fetch product');
-                const data = await response.json();
-                setProduct(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+  // Fetch product when the component mounts
+  useEffect(() => {
+    const obtainProduct = async () => {
+      try {
+        const productId = window.location.pathname.split("/home/")[1];
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/home/${productId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch product");
+        const data = await response.json();
+        setProduct(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        obtainProduct();
-    }, []);
+    obtainProduct();
+  }, []);
 
-    // Fetch ratings data for the product
+  // Fetch ratings data for the product
   useEffect(() => {
     const fetchRatings = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/ratings/${productId}`);
-        if (!response.ok) throw new Error('Failed to fetch ratings');
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/ratings/${productId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch ratings");
         const ratingsData = await response.json();
         setRatings(ratingsData);
       } catch (err) {
@@ -64,58 +70,67 @@ export default function ProductFocus() {
     }
   }, [productId]);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        fetchUserStatus(userId, setUserId, token);
-    }, [userId])
-    
-    // Handle adding items to cart
-    const handleAddToCart = async (quantity) => {
-        // Send fetch request to add to cart
-        fetch(`${process.env.REACT_APP_API_URL}/cart`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-              productId: product.id,
-              quantity,
-              price: product.price,
-            }),
-          })
-            .then((res) => {
-              if (!res.ok) throw new Error("Failed to add to cart");
-              return res.json();
-            })
-            .then((data) => {
-              alert("Product added to cart successfully!");
-            })
-            .catch((err) => {
-              console.error(err.message);
-              alert("Failed to add to cart.");
-            });
-    };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetchUserStatus(userId, setUserId, token);
+  }, [userId]);
 
-    if (loading) return <div className='p-20 text-gray-500 text-lg'>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+  // Handle adding items to cart
+  const handleAddToCart = async (quantity) => {
+    // Send fetch request to add to cart
+    fetch(`${process.env.REACT_APP_API_URL}/cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        productId: product.id,
+        quantity,
+        price: product.price,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to add to cart");
+        return res.json();
+      })
+      .then((data) => {
+        alert("Product added to cart successfully!");
+      })
+      .catch((err) => {
+        console.error(err.message);
+        alert("Failed to add to cart.");
+      });
+  };
 
-    return (
-      <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 pt-20 relative flex flex-wrap justify-between">
-          <figure className="flex justify-start w-2/3">
-            <img
-              alt={product.name}
-              src={product.image_url}
-              className="w-11/12 object-cover rounded-md"
-            />
-          </figure>
-          
-          <div className='flex flex-col w-1/3'>
-            <h2 className="mt-1 text-2xl font-bold text-gray-800">{product.name}</h2>
-            <p>Stock: {product.stock_quantity}</p>
-            <p className='text-gray-500'>{product.quantity_sold === 0? `Not sells yet` : `${product.quantity_sold} sold`}</p>
-            <span className="mt-3 block text-xl font-semibold text-green-600">${product.price}</span>
-          </div>
+  if (loading)
+    return <div className="p-20 text-gray-500 text-lg">Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 pt-20 relative flex flex-wrap justify-between">
+      <figure className="flex justify-start w-2/3">
+        <img
+          alt={product.name}
+          src={product.image_url}
+          className="w-11/12 object-cover rounded-md"
+        />
+      </figure>
+
+      <div className="flex flex-col w-1/3">
+        <h2 className="mt-1 text-2xl font-bold text-gray-800">
+          {product.name}
+        </h2>
+        <p>Stock: {product.stock_quantity}</p>
+        <p className="text-gray-500">
+          {product.quantity_sold === 0
+            ? `Not sells yet`
+            : `${product.quantity_sold} sold`}
+        </p>
+        <span className="mt-3 block text-xl font-semibold text-green-600">
+          ${product.price}
+        </span>
+      </div>
 
       <div className="mt-4 flex space-x-4">
         {/* When Buy is clicked, open the Direct Purchase modal */}
@@ -133,13 +148,16 @@ export default function ProductFocus() {
         </button>
       </div>
 
-      <p className="mt-2 text-gray-700">Description: <br></br>{product.description}</p>
+      <p className="mt-2 text-gray-700">
+        Description: <br></br>
+        {product.description}
+      </p>
 
       {/* Ratings Section */}
       <RatingsDistribution
         distribution={ratings.distribution}
         average={ratings.average}
-        className='w-full'
+        className="w-full"
       />
 
       <DetailsTable productId={productId} />
@@ -169,7 +187,7 @@ export default function ProductFocus() {
 
       {isDirectCheckoutOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-lg relative">
+          <div className="bg-white rounded-lg p-6 w-full mx-2 max-w-lg relative">
             <button
               onClick={() => setDirectCheckoutOpen(false)}
               className="absolute top-2 right-2 text-red-500 text-xl font-bold"
@@ -177,16 +195,16 @@ export default function ProductFocus() {
               X
             </button>
             <Elements stripe={stripePromise}>
-            <DirectCheckoutForm
-              totalAmount={product.price * directPurchaseQuantity}
-              userId={userId}
-              product={product}
-              quantity={directPurchaseQuantity}
-            />
+              <DirectCheckoutForm
+                totalAmount={product.price * directPurchaseQuantity}
+                userId={userId}
+                product={product}
+                quantity={directPurchaseQuantity}
+              />
             </Elements>
           </div>
         </div>
       )}
     </section>
-    )
-};
+  );
+}

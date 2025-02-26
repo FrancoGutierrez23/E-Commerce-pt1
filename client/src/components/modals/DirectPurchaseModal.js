@@ -15,7 +15,7 @@ export default function DirectPurchaseModal({ product, onClose, onConfirm }) {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+      <div className="bg-white mx-3 rounded-lg p-6 w-full max-w-sm">
         <h3 className="text-xl font-semibold text-gray-800 mb-4">Buy {product.name}</h3>
         
         <p className="text-lg text-gray-700 mb-4">

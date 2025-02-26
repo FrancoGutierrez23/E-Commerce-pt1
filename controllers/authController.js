@@ -22,7 +22,7 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+
 
         if (error.code === '23505') res.status(400).json({ error: 'Username or email already exists.' });
 
@@ -53,7 +53,6 @@ const login = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: 'Internal Server Error.' });
     }
 };

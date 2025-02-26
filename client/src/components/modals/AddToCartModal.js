@@ -27,7 +27,7 @@ export default function AddToCartModal({ product, onClose, onConfirm }) {
               type="number"
               value={quantity}
               onChange={handleQuantityChange}
-              min="1"
+              
               className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
           </label>

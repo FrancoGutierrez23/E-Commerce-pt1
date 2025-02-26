@@ -1,6 +1,6 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export default function RatingsDistribution({ distribution, average }) {
   // Convert string counts to numbers & sum them
@@ -16,10 +16,10 @@ export default function RatingsDistribution({ distribution, average }) {
     <div className="mt-4 w-3/4">
       <h3 className="text-lg font-semibold">Reviews</h3>
       <p>
-        Average Rating: {Number(average).toFixed(1)}/5{' '} 
+        Average Rating: {Number(average).toFixed(1)}/5{" "}
         <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
       </p>
-      <p className='text-gray-500'>{`( ${totalCount} user reviews)`}</p>
+      <p className="text-gray-500">{`( ${totalCount} user reviews)`}</p>
 
       <div className="mt-2 space-y-2">
         {starRatings.map((star) => {
