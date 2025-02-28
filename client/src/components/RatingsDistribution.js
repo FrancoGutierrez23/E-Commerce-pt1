@@ -15,9 +15,10 @@ export default function RatingsDistribution({ distribution, average }) {
   return (
     <div className="mt-4 w-3/4">
       <h3 className="text-lg font-semibold">Reviews</h3>
-      <p>
-        Average Rating: {Number(average).toFixed(1)}/5{" "}
-        <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
+      <p className="average">
+        Average Rating: <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
+        {Number(average).toFixed(1)} / 5{" "}
+        
       </p>
       <p className="text-gray-500">{`( ${totalCount} user reviews)`}</p>
 
@@ -35,7 +36,7 @@ export default function RatingsDistribution({ distribution, average }) {
           return (
             <div key={star} className="flex items-center">
               {/* Left: Star Label */}
-              <span className="w-12 text-sm text-gray-700 flex items-center">
+              <span className="w-12 text-sm text-indigo-700 flex items-center">
                 <FontAwesomeIcon
                   icon={faStar}
                   className="text-yellow-500 mr-1"
@@ -44,16 +45,16 @@ export default function RatingsDistribution({ distribution, average }) {
               </span>
 
               {/* Middle: Bar Container */}
-              <div className="flex-1 h-3 bg-gray-200 mx-2 rounded overflow-hidden relative">
+              <div className="flex-1 h-3 bg-indigo-100 mx-2 rounded overflow-hidden relative">
                 {/* Filled portion (blue) */}
                 <div
-                  className="h-3 bg-blue-500 rounded"
+                  className="h-3 bg-indigo-500 rounded"
                   style={{ width: `${percentage}%` }}
                 ></div>
               </div>
 
               {/* Right: Count */}
-              <span className="text-sm text-gray-700 w-8 text-right">
+              <span className="text-sm text-indigo-700 w-8 text-right">
                 {count}
               </span>
             </div>

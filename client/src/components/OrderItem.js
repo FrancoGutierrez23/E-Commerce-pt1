@@ -63,7 +63,7 @@ export default function OrderItem({ order }) {
           onClick={() => {
             navigate(`/home/${product.id}`);
           }}
-          className="cursor-pointer hover:underline text-gray-800 hover:text-blue-600"
+          className="cursor-pointer hover:underline text-gray-800 hover:text-indigo-600"
         >
           <figure className="mt-3">
             <img
@@ -95,7 +95,7 @@ export default function OrderItem({ order }) {
       <div className="flex items-center space-x-4">
         <button
           onClick={handleCancelOrder}
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
         >
           <FontAwesomeIcon icon={faTimes} /> Cancel
         </button>

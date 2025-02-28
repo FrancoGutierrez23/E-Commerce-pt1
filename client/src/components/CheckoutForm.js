@@ -64,7 +64,7 @@ export default function CheckoutForm({ totalAmount, userId, cartId }) {
                     type="submit"
                     disabled={!stripe || !elements}
                     className={`px-6 py-3 text-white font-semibold rounded-md transition ${
-                        !stripe || !elements ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                        !stripe || !elements ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-800"
                     }`}
                 >
                     Pay

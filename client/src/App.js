@@ -14,7 +14,7 @@ import PhoneNav from "./components/PhoneNav";
 import useMediaQuery from "./components/customHooks.js";
 
 function App() {
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isMobile = useMediaQuery("(max-width: 900px)");
 
   return (
     <AuthProvider>

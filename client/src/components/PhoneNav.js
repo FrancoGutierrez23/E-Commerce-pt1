@@ -19,7 +19,7 @@ export default function PhoneNav() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="bg-gray-900 p-4 shadow-lg mb-5 fixed w-full z-10">
+    <nav className="bg-indigo-800 p-4 shadow-lg fixed w-full z-10">
       <div className="flex justify-between items-center">
         {/* Hamburger Icon */}
         <button onClick={toggleMenu} className="text-white focus:outline-none">
@@ -51,14 +51,14 @@ export default function PhoneNav() {
         </button>
 
         {/* Home Link */}
-        <Link to="/home" className="text-white text-lg">
+        <Link to="/home" className="text-white hover:text-indigo-100 transition">
           <FontAwesomeIcon icon={faHome} /> Home
         </Link>
 
         {userId ? (
           <Link
             to={`/cart/${userId}`}
-            className="block text-white hover:text-gray-300 transition"
+            className="block text-white hover:text-indigo-100 transition"
             onClick={() => setMenuOpen(false)}
           >
             <FontAwesomeIcon icon={faShoppingCart} /> Cart
@@ -66,7 +66,7 @@ export default function PhoneNav() {
         ) : (
           <Link
             to="/auth/login"
-            className="block text-white hover:text-gray-300 transition"
+            className="block text-white hover:text-indigo-100 transition"
             onClick={() => setMenuOpen(false)}
           >
             <FontAwesomeIcon icon={faSignIn} /> Login
@@ -82,7 +82,7 @@ export default function PhoneNav() {
               <li>
                 <Link
                   to={`/user/${userId}`}
-                  className="block text-white hover:text-gray-300 transition"
+                  className="block text-white hover:text-indigo-100 transition"
                   onClick={() => setMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faUser} /> Profile
@@ -91,7 +91,7 @@ export default function PhoneNav() {
               <li>
                 <Link
                   to={`/orders/${userId}`}
-                  className="block text-white hover:text-gray-300 transition"
+                  className="block text-white hover:text-indigo-100 transition"
                   onClick={() => setMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faEnvelopeCircleCheck} /> Orders
@@ -100,7 +100,7 @@ export default function PhoneNav() {
               <li>
                 <Link
                   to="/auth/logout"
-                  className="block bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition"
+                  className="block text-white bg-black bg-opacity-40 hover:bg-opacity-50 ring-black ring-8 ring-opacity-40 hover:ring-opacity-50 rounded-lg hover:text-indigo-100 transition"
                   onClick={() => setMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faSignOut} /> Logout
@@ -112,7 +112,7 @@ export default function PhoneNav() {
               <li>
                 <Link
                   to="/auth/login"
-                  className="block text-white hover:text-gray-300 transition"
+                  className="block text-white hover:text-indigo-100 transition"
                   onClick={() => setMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faSignIn} /> Login

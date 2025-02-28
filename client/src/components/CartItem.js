@@ -86,9 +86,9 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
           onClick={() => {
             navigate(`/home/${product.id}`);
           }}
-          className="cursor-pointer hover:underline text-gray-800 hover:text-blue-600"
+          className="cursor-pointer hover:underline text-gray-800 hover:text-indigo-600"
         >
-          <figure className="mt-3">
+          <figure className="mt-3 mb-3">
             <img
               alt={product.name}
               src={product.image_url}
@@ -100,7 +100,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
           <h4 className="text-lg font-semibold text-gray-800">
             <a
               href={`/home/${product.id}`}
-              className="block text-lg font-semibold hover:underline hover:text-blue-600"
+              className="block text-lg font-semibold hover:underline hover:text-indigo-600"
             >
               {product.name}
             </a>
@@ -123,7 +123,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
             />
             <button
               onClick={handleSaveClick}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
             >
               Save
             </button>
@@ -133,7 +133,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
             <span className="text-gray-700">Quantity: {cartItem.quantity}</span>
             <button
               onClick={handleEditClick}
-              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+              className="px-4 py-2 bg-indigo-200 text-gray-800 rounded-md hover:bg-indigo-300 transition"
             >
               Edit
             </button>
@@ -142,7 +142,7 @@ export default function CartItem({ cartItem, userId, onUpdateQuantity }) {
 
         <button
           onClick={handleRemove}
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
         >
           Remove
         </button>

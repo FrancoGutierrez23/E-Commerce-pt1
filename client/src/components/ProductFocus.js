@@ -7,6 +7,8 @@ import DirectCheckoutForm from "./DirectCheckoutForm";
 import fetchUserStatus from "./utils";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const stripePromise = loadStripe(
   "pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8"
@@ -127,8 +129,12 @@ export default function ProductFocus() {
             ? `Not sells yet`
             : `${product.quantity_sold} sold`}
         </p>
-        <span className="mt-3 block text-xl font-semibold text-green-600">
+        <span className="mt-3 block text-xl font-semibold text-green-500">
           ${product.price}
+        </span>
+        <span className="text-lg pt-1">
+          <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
+          {document?.getElementsByClassName('average')[0]?.textContent?.split('Average Rating:')}
         </span>
       </div>
 
@@ -136,13 +142,13 @@ export default function ProductFocus() {
         {/* When Buy is clicked, open the Direct Purchase modal */}
         <button
           onClick={() => setBuyModalOpen(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
         >
           Buy now
         </button>
         <button
           onClick={() => setCartModalOpen(true)}
-          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+          className="px-4 py-2 bg-indigo-200 text-gray-800 rounded-md hover:bg-indigo-300 transition"
         >
           Add to cart
         </button>
@@ -153,14 +159,14 @@ export default function ProductFocus() {
         {product.description}
       </p>
 
+      <DetailsTable productId={productId} />
+
       {/* Ratings Section */}
       <RatingsDistribution
         distribution={ratings.distribution}
         average={ratings.average}
         className="w-full"
       />
-
-      <DetailsTable productId={productId} />
 
       {isCartModalOpen && (
         <AddToCartModal
@@ -190,7 +196,7 @@ export default function ProductFocus() {
           <div className="bg-white rounded-lg p-6 w-full mx-2 max-w-lg relative">
             <button
               onClick={() => setDirectCheckoutOpen(false)}
-              className="absolute top-2 right-2 text-red-500 text-xl font-bold"
+              className="absolute top-2 right-2 text-indigo-800 text-xl font-extrabold"
             >
               X
             </button>

@@ -59,7 +59,7 @@ export default function Register() {
         required
         value={formData.email}
         onChange={handleChange}
-        className="w-full px-4 py2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full px-4 py2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
       />
 
       <label htmlFor="username" className="block text-gray-700 font-semibold">
@@ -73,7 +73,7 @@ export default function Register() {
         required
         value={formData.username}
         onChange={handleChange}
-        className="w-full px-4 py2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full px-4 py2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
       />
 
       <label htmlFor="password" className="block text-gray-700 font-semibold">
@@ -87,20 +87,12 @@ export default function Register() {
         required
         value={formData.password}
         onChange={handleChange}
-        className="w-full px-4 py2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full px-4 py2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
       />
-
-      <p className="text-gray-600 text-sm">
-        By creating an account you agree to our{" "}
-        <a href="/" className="text-blue-600 hover:underline">
-          Terms & Privacy
-        </a>
-        .
-      </p>
 
       <button
         type="submit"
-        className="loginbtn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        className="loginbtn w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-800 transition"
       >
         <FontAwesomeIcon icon={faUserPlus} /> Register
       </button>
@@ -110,7 +102,7 @@ export default function Register() {
 
       <button
         type="button"
-        className="google-login w-full flex items-center justify-center bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
+        className="google-login w-full flex items-center justify-center bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-800 transition"
         onClick={() =>
           (window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`)
         }

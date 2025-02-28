@@ -31,11 +31,11 @@ export default function Product({ product }) {
         onClick={() => {
           navigate(`/home/${product.id}`);
         }}
-        className="cursor-pointer hover:underline text-gray-800 hover:text-blue-600"
+        className="cursor-pointer hover:underline text-gray-800 hover:text-indigo-600"
       >
         <a
           href={`/home/${product.id}`}
-          className="block text-lg font-semibold hover:underline hover:text-blue-600"
+          className="block text-lg font-semibold hover:underline hover:text-indigo-600"
         >
           {product.name}
         </a>
@@ -52,13 +52,13 @@ export default function Product({ product }) {
       </div>
 
       <div className="flex justify-between items-center mt-3">
-        <span className="font-bold text-green-600">${product.price}</span>
+        <span className="font-bold text-lg text-green-500">${product.price}</span>
         {ratings.average === 0 ? (
           <p></p>
         ) : (
-          <span className="">
-            <FontAwesomeIcon icon={faStar} className="text-yellow-500 " />
-            {Number(ratings.average).toFixed(1)}/5
+          <span className="text-lg">
+            <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" /> 
+             {Number(ratings.average).toFixed(1)} / 5
           </span>
         )}
       </div>

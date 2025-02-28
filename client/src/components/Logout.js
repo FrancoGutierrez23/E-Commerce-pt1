@@ -38,7 +38,7 @@ const Logout = () => {
       <span className="text-xl">Are you sure?</span>
       <button
         onClick={handleLogout}
-        className="bg-red-600 px-3 py-1 text-white rounded-lg m-2 hover:bg-red-700 transition"
+        className="bg-indigo-600 px-3 py-1 text-white rounded-lg m-2 hover:bg-indigo-800 transition"
       >
         Logout
       </button>

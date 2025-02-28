@@ -30,7 +30,7 @@ export default function DirectPurchaseModal({ product, onClose, onConfirm }) {
               value={quantity}
               onChange={handleQuantityChange}
               min="1"
-              className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
             />
           </label>
         </div>
@@ -38,13 +38,13 @@ export default function DirectPurchaseModal({ product, onClose, onConfirm }) {
         <div className="flex justify-between space-x-4">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+            className="px-4 py-2 bg-indigo-200 text-gray-800 rounded-md hover:bg-indigo-300 transition"
           >
             Cancel
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
           >
             Proceed to Checkout
           </button>

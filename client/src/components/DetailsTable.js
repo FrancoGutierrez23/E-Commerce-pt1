@@ -36,24 +36,24 @@ export default function DetailsTable({ productId }) {
       <table className="min-w-full border-collapse">
         <tbody>
           {details.condition && (
-            <tr className="border-b">
+            <tr className="border-b border-indigo-300">
               <td className="px-4 py-2 font-medium">Condition</td>
               <td className="px-4 py-2">{details.condition}</td>
             </tr>
           )}
           {details.weight && (
-            <tr className="border-b">
+            <tr className="border-b border-indigo-300">
               <td className="px-4 py-2 font-medium">Weight</td>
               <td className="px-4 py-2">{details.weight} kg</td>
             </tr>
           )}
           {details.size && (
-            <tr className="border-b">
+            <tr className="border-b border-indigo-300">
               <td className="px-4 py-2 font-medium">Size</td>
               <td className="px-4 py-2">{details.size}</td>
             </tr>
           )}
-          <tr className="border-b">
+          <tr className="border-b border-indigo-300">
             <td className="px-4 py-2 font-medium">Warranty</td>
             <td className="px-4 py-2">
               {details.warranty ? details.warranty : "No warranty"}
