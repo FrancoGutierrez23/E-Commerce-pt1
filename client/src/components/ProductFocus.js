@@ -20,6 +20,7 @@ export default function ProductFocus() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [ratings, setRatings] = useState({ distribution: [], average: 0 });
+  const [showAlert, setShowAlert] = useState(false);
 
   // For Add to cart option
   const [isCartModalOpen, setCartModalOpen] = useState(false);
@@ -77,32 +78,31 @@ export default function ProductFocus() {
     fetchUserStatus(userId, setUserId, token);
   }, [userId]);
 
-  // Handle adding items to cart
   const handleAddToCart = async (quantity) => {
-    // Send fetch request to add to cart
-    fetch(`${process.env.REACT_APP_API_URL}/cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        productId: product.id,
-        quantity,
-        price: product.price,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to add to cart");
-        return res.json();
-      })
-      .then((data) => {
-        alert("Product added to cart successfully!");
-      })
-      .catch((err) => {
-        console.error(err.message);
-        alert("Failed to add to cart.");
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          productId: product.id,
+          quantity,
+          price: product.price,
+        }),
       });
+      if (!response.ok) throw new Error("Failed to add to cart");
+      await response.json();
+
+      // Show the alert
+      setShowAlert(true);
+      // Hide the alert after 3 seconds
+      setTimeout(() => setShowAlert(false), 3000);
+    } catch (err) {
+      console.error(err.message);
+      alert("Failed to add to cart.");
+    }
   };
 
   if (loading)
@@ -134,39 +134,43 @@ export default function ProductFocus() {
         </span>
         <span className="text-lg pt-1">
           <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
-          {document?.getElementsByClassName('average')[0]?.textContent?.split('Average Rating:')}
+          {document
+            ?.getElementsByClassName("average")[0]
+            ?.textContent?.split("Average Rating:")}
         </span>
       </div>
 
-      <div className="mt-4 flex space-x-4">
-        {/* When Buy is clicked, open the Direct Purchase modal */}
-        <button
-          onClick={() => setBuyModalOpen(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
-        >
-          Buy now
-        </button>
-        <button
-          onClick={() => setCartModalOpen(true)}
-          className="px-4 py-2 bg-indigo-200 text-gray-800 rounded-md hover:bg-indigo-300 transition"
-        >
-          Add to cart
-        </button>
+      <div className="w-full">
+        <div className="mt-4 flex space-x-4">
+          {/* When Buy is clicked, open the Direct Purchase modal */}
+          <button
+            onClick={() => setBuyModalOpen(true)}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
+          >
+            Buy now
+          </button>
+          <button
+            onClick={() => setCartModalOpen(true)}
+            className="px-4 py-2 bg-indigo-200 text-gray-800 rounded-md hover:bg-indigo-300 transition"
+          >
+            Add to cart
+          </button>
+        </div>
+
+        <p className="mt-2 text-gray-700 w-full">
+          Description: <br></br>
+          {product.description}
+        </p>
+
+        <DetailsTable productId={productId} />
+
+        {/* Ratings Section */}
+        <RatingsDistribution
+          distribution={ratings.distribution}
+          average={ratings.average}
+          className="w-full"
+        />
       </div>
-
-      <p className="mt-2 text-gray-700">
-        Description: <br></br>
-        {product.description}
-      </p>
-
-      <DetailsTable productId={productId} />
-
-      {/* Ratings Section */}
-      <RatingsDistribution
-        distribution={ratings.distribution}
-        average={ratings.average}
-        className="w-full"
-      />
 
       {isCartModalOpen && (
         <AddToCartModal
@@ -175,6 +179,25 @@ export default function ProductFocus() {
           onConfirm={handleAddToCart}
         />
       )}
+
+      {/* Alert fixed bottom-1 right-2 z-10 */}
+      {showAlert && (
+          <div
+            className={`fixed bottom-1 right-2 z-10 transition-opacity duration-300 ${
+              showAlert ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <div className="alert p-3 rounded-md bg-green-400 text-white mb-1 z-10">
+              <span
+                className="closebtn ml-5 text-white font-bold float-right text-xl leading-5 duration-300 cursor-pointer"
+                onClick={() => setShowAlert(false)}
+              >
+                &times;
+              </span>
+              Added to cart.
+            </div>
+          </div>
+        )}
 
       {isBuyModalOpen && (
         <DirectPurchaseModal

@@ -13,7 +13,7 @@ export default function RatingsDistribution({ distribution, average }) {
   const starRatings = [5, 4, 3, 2, 1];
 
   return (
-    <div className="mt-4 w-3/4">
+    <div className="mt-4 max-w-sm">
       <h3 className="text-lg font-semibold">Reviews</h3>
       <p className="average">
         Average Rating: <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
