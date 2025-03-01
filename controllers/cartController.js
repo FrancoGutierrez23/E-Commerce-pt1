@@ -21,7 +21,12 @@ const addToCart = async (req, res) => {
         const result = await cartModel.addItemToCart(userId, productId, quantity, price);
         res.send(result.rows);
     } catch (error) {
-        res.status(500).json({ error: 'Server error. Please try again.' });
+        if (!userId) {
+            res.status(403).json({ error: 'Please login/register first.' })
+        } else {
+            res.status(500).json({ error: 'Server error. Please try again.' });
+        }
+        
     }
 };
 

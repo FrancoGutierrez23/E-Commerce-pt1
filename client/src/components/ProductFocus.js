@@ -92,22 +92,31 @@ export default function ProductFocus() {
           price: product.price,
         }),
       });
-      if (!response.ok) throw new Error("Failed to add to cart");
-      await response.json();
+
+      if (!response.ok && response.status === 403) {
+        setShowAlert(403);
+        setTimeout(() => setShowAlert(false), 4000);
+        throw Error("test");
+      } else if (!response.ok) {
+        throw new Error("Failed to add to cart");
+      }
 
       // Show the alert
-      setShowAlert(true);
+      setShowAlert(200);
       // Hide the alert after 3 seconds
       setTimeout(() => setShowAlert(false), 3000);
     } catch (err) {
       console.error(err.message);
-      alert("Failed to add to cart.");
+      console.log(err);
     }
   };
 
   if (loading) {
     return (
-      <div role="status" className="pt-20 w-full flex justify-center content-center">
+      <div
+        role="status"
+        className="pt-20 w-full flex justify-center content-center"
+      >
         <svg
           aria-hidden="true"
           className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
@@ -126,7 +135,7 @@ export default function ProductFocus() {
         </svg>
         <span className="sr-only">Loading...</span>
       </div>
-    )
+    );
   }
   if (error) return <div>Error: {error}</div>;
 
@@ -155,9 +164,7 @@ export default function ProductFocus() {
         </span>
         <span className="text-lg pt-1">
           <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
-          {document
-            ?.getElementsByClassName("average")[0]
-            ?.textContent?.split("Average Rating:")}
+          {Number(ratings.average).toFixed(1)} / 5{" "}
         </span>
       </div>
 
@@ -201,24 +208,42 @@ export default function ProductFocus() {
         />
       )}
 
-      {/* Alert fixed bottom-1 right-2 z-10 */}
-      {showAlert && (
-          <div
-            className={`fixed bottom-1 right-2 z-10 transition-opacity duration-300 ${
-              showAlert ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          >
-            <div className="alert p-3 rounded-md bg-green-400 text-white mb-1 z-10">
-              <span
-                className="closebtn ml-5 text-white font-bold float-right text-xl leading-5 duration-300 cursor-pointer"
-                onClick={() => setShowAlert(false)}
-              >
-                &times;
-              </span>
-              Added to cart.
-            </div>
+      {/* Alerts */}
+      {showAlert === 200 && (
+        <div
+          className={`fixed bottom-1 right-2 z-10 transition-opacity duration-300 ${
+            showAlert ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="alert p-3 rounded-md bg-green-400 text-white mb-1 z-10">
+            <span
+              className="closebtn ml-5 text-white font-bold float-right text-xl leading-5 duration-300 cursor-pointer"
+              onClick={() => setShowAlert(false)}
+            >
+              &times;
+            </span>
+            Added to cart.
           </div>
-        )}
+        </div>
+      )}
+
+      {showAlert === 403 && (
+        <div
+          className={`fixed bottom-1 right-2 z-10 transition-opacity duration-300 ${
+            showAlert ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="alert p-3 rounded-md bg-red-400 text-white mb-1 z-10">
+            <span
+              className="closebtn ml-5 text-white font-bold float-right text-xl leading-5 duration-300 cursor-pointer"
+              onClick={() => setShowAlert(false)}
+            >
+              &times;
+            </span>
+            Login/Register first.
+          </div>
+        </div>
+      )}
 
       {isBuyModalOpen && (
         <DirectPurchaseModal
