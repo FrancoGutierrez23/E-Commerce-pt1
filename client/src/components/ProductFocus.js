@@ -172,7 +172,12 @@ export default function ProductFocus() {
         <div className="mt-4 flex space-x-4">
           {/* When Buy is clicked, open the Direct Purchase modal */}
           <button
-            onClick={() => setBuyModalOpen(true)}
+            onClick={() => {
+              userId?
+              setBuyModalOpen(true) :
+              setShowAlert(403);
+              setTimeout(() => setShowAlert(false), 4000);
+            }}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
           >
             Buy now
