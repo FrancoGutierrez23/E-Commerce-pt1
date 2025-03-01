@@ -16,17 +16,24 @@ export default function CartList() {
   const [error, setError] = useState(null);
   const [cartTotal, setCartTotal] = useState(0);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetchUserStatus(userId, setUserId, token);
-  }, [userId]);
-
   // Fetch products when the component mounts
   useEffect(() => {
     const obtainCartItems = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Please login/register first.");
+        setLoading(false);
+        return;
+      }
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/cart/${window.location.pathname.split("/cart/")[1]}`
+          `${process.env.REACT_APP_API_URL}/cart/${window.location.pathname.split("/cart/")[1]}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.status === 404) throw new Error("You have not cart yet");
         if (!response.ok) throw new Error("Failed to fetch products");
@@ -88,7 +95,10 @@ export default function CartList() {
 
   if (loading)
     return (
-      <div role="status" className="pt-20 w-full flex justify-center content-center">
+      <div
+        role="status"
+        className="pt-20 w-full flex justify-center content-center"
+      >
         <svg
           aria-hidden="true"
           className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"

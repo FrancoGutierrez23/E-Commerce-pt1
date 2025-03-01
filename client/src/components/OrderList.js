@@ -10,9 +10,21 @@ export default function OrderList() {
   useEffect(() => {
     const obtainOrders = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Please login/register first.");
+          setLoading(false);
+          return;
+        }
         const userId = window.location.pathname.split("/orders/")[1];
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/orders/${userId}`
+          `${process.env.REACT_APP_API_URL}/orders/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -31,7 +43,10 @@ export default function OrderList() {
 
   if (loading) {
     return (
-      <div role="status" className="pt-20 w-full flex justify-center content-center">
+      <div
+        role="status"
+        className="pt-20 w-full flex justify-center content-center"
+      >
         <svg
           aria-hidden="true"
           className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
@@ -50,14 +65,15 @@ export default function OrderList() {
         </svg>
         <span className="sr-only">Loading...</span>
       </div>
-    )
+    );
   }
-  if (error)
+  if (error) {
     return (
       <div className="pt-32 flex justify-around text-xl w-full text-gray-700 font-semibold">
-        You have not orders yet.
+        {error || error.message}
       </div>
     );
+  }
 
   return (
     <section className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">

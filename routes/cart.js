@@ -5,7 +5,7 @@ const authenticateToken = require('./helpers.js');
 const cartController = require('../controllers/cartController.js');
 
 // Get cart for a user
-router.get('/:id',cartController.getCart);
+router.get('/:id',authenticateToken ,cartController.getCart);
 
 // Add an item to a cart
 router.post('/', cartController.addToCart);

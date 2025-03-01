@@ -83,7 +83,7 @@ export default function OrderItem({ order }) {
           </a>
           <p className="text-gray-600">Quantity: {order.quantity}</p>
           <span className="text-sm text-gray-800 font-semibold">
-            Total: {order.total_price}
+            Product price: ${order.price}
           </span>
           <p className="text-sm text-gray-500">Status: {order.status}</p>
           <p className="text-sm text-gray-500">

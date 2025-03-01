@@ -62,7 +62,10 @@ const User = () => {
 
   if (loading) {
     return (
-      <div role="status" className="pt-20 w-full flex justify-center content-center">
+      <div
+        role="status"
+        className="pt-20 w-full flex justify-center content-center"
+      >
         <svg
           aria-hidden="true"
           className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
@@ -81,10 +84,22 @@ const User = () => {
         </svg>
         <span className="sr-only">Loading...</span>
       </div>
-    )
+    );
   }
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
+  if (error && error.includes("token")) {
+    return (
+      <div className="pt-32 flex justify-around text-xl w-full text-gray-700 font-semibold">
+        Please login/register first.
+      </div>
+    );
+  } else if (error) {
+    return (
+      <p className="pt-32 flex justify-around text-xl w-full text-gray-700 font-semibold">
+        Error: {error}
+      </p>
+    );
+  }
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 pt-20">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">

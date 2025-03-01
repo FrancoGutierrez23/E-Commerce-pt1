@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('./helpers.js');
 const orderController = require('../controllers/orderController.js');
 
 // Get all orders for a user
-router.get('/:userId', orderController.getOrders);
+router.get('/:userId', authenticateToken, orderController.getOrders);
 
 // Make an order of a single product
 router.post('/:userId', orderController.createOrder);
