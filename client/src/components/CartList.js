@@ -20,6 +20,7 @@ export default function CartList() {
   useEffect(() => {
     const obtainCartItems = async () => {
       const token = localStorage.getItem("token");
+      fetchUserStatus(userId,setUserId, token);
       if (!token) {
         setError("Please login/register first.");
         setLoading(false);
