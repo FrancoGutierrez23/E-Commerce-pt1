@@ -24,9 +24,48 @@ export default function ProductList() {
     obtainProducts();
   }, []);
 
+  // ProductList.js
+  useEffect(() => {
+    const fetchProductsAndRatings = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/home`);
+        if (!response.ok) throw new Error("Failed to fetch products");
+        const productsData = await response.json();
+
+        // Batch fetch ratings for all products
+        const ratingsResponses = await Promise.all(
+          productsData.map((product) =>
+            fetch(
+              `${process.env.REACT_APP_API_URL}/ratings/${product.id}`
+            ).then((res) =>
+              res.ok ? res.json() : { distribution: [], average: 0 }
+            )
+          )
+        );
+
+        // Merge ratings into product objects
+        const productsWithRatings = productsData.map((product, idx) => ({
+          ...product,
+          ratings: ratingsResponses[idx],
+        }));
+
+        setProducts(productsWithRatings);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductsAndRatings();
+  }, []);
+
   if (loading)
     return (
-      <div role="status" className="pt-20 w-full flex justify-center content-center">
+      <div
+        role="status"
+        className="pt-20 w-full flex justify-center content-center"
+      >
         <svg
           aria-hidden="true"
           className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
