@@ -50,7 +50,7 @@ app.use(
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      maxAge: 1000 * 60 * 60 * 10, // Session expires in 10 hours
+      maxAge: 100 * 60 * 60 * 10, // Session expires in 10 hours
     },
   })
 );

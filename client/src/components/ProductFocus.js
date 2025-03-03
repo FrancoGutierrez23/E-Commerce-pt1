@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import RatingsDistribution from "./RatingsDistribution";
 import DetailsTable from "./DetailsTable";
-import AddToCartModal from "./modals/AddToCartModal";
-import DirectPurchaseModal from "./modals/DirectPurchaseModal";
-import DirectCheckoutForm from "./DirectCheckoutForm";
 import fetchUserStatus from "./utils";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DirectCheckoutForm from "./DirectCheckoutForm";
 
 const stripePromise = loadStripe(
   "pk_test_51QmFViPsLGexrMsUOP25sWLLwZ7rYE3o252lzmAXUAQTPbq1U7aJ61UBIsrfcy8jlokHXADmYeh7SC0eNgPFML8e00PUuWHzu8"
 );
 
+// Lazy-load modals to reduce the initial bundle size.
+const AddToCartModal = React.lazy(() => import("./modals/AddToCartModal"));
+const DirectPurchaseModal = React.lazy(() => import("./modals/DirectPurchaseModal"));
+
 export default function ProductFocus() {
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState(null);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [ratings, setRatings] = useState({ distribution: [], average: 0 });
   const [showAlert, setShowAlert] = useState(false);
 
-  // For Add to cart option
+  // For Add to Cart option
   const [isCartModalOpen, setCartModalOpen] = useState(false);
 
   // For Buy option
@@ -31,60 +33,53 @@ export default function ProductFocus() {
   const [isDirectCheckoutOpen, setDirectCheckoutOpen] = useState(false);
 
   const productId = window.location.pathname.split("/home/")[1];
-
-  // Fetch product when the component mounts
   useEffect(() => {
-    const obtainProduct = async () => {
+    if (product?.image_url) {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = product.image_url;
+      document.head.appendChild(link);
+      return () => {
+        document.head.removeChild(link);
+      };
+    }
+  }, [product?.image_url]);
+  
+  // Fetch product and ratings concurrently.
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const productId = window.location.pathname.split("/home/")[1];
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/home/${productId}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch product");
-        const data = await response.json();
-        setProduct(data);
+        const [productRes, ratingsRes] = await Promise.all([
+          fetch(`${process.env.REACT_APP_API_URL}/home/${productId}`),
+          fetch(`${process.env.REACT_APP_API_URL}/ratings/${productId}`)
+        ]);
+        if (!productRes.ok) throw new Error("Failed to fetch product");
+        if (!ratingsRes.ok) throw new Error("Failed to fetch ratings");
+        const productData = await productRes.json();
+        const ratingsData = await ratingsRes.json();
+        setProduct(productData);
+        setRatings(ratingsData);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
-    obtainProduct();
-  }, []);
-
-  // Fetch ratings data for the product
-  useEffect(() => {
-    const fetchRatings = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/ratings/${productId}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch ratings");
-        const ratingsData = await response.json();
-        setRatings(ratingsData);
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-
-    if (productId) {
-      fetchRatings();
-    }
+    fetchData();
   }, [productId]);
 
+  // Fetch user status only once on mount.
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetchUserStatus(userId, setUserId, token);
-  }, [userId]);
+    fetchUserStatus(null, setUserId, token);
+  }, []);
 
   const handleAddToCart = async (quantity) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
           productId: product.id,
@@ -96,27 +91,20 @@ export default function ProductFocus() {
       if (!response.ok && response.status === 403) {
         setShowAlert(403);
         setTimeout(() => setShowAlert(false), 4000);
-        throw Error("test");
+        throw Error("Unauthorized");
       } else if (!response.ok) {
         throw new Error("Failed to add to cart");
       }
-
-      // Show the alert
       setShowAlert(200);
-      // Hide the alert after 3 seconds
       setTimeout(() => setShowAlert(false), 3000);
     } catch (err) {
       console.error(err.message);
-      console.log(err);
     }
   };
 
   if (loading) {
     return (
-      <div
-        role="status"
-        className="pt-20 w-full flex justify-center content-center"
-      >
+      <div role="status" className="pt-20 w-full flex justify-center">
         <svg
           aria-hidden="true"
           className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
@@ -124,8 +112,9 @@ export default function ProductFocus() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
+          {/* Spinner paths */}
           <path
-            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908Z"
             fill="currentColor"
           />
           <path
@@ -144,39 +133,36 @@ export default function ProductFocus() {
       <figure className="flex justify-start w-2/3">
         <img
           alt={product.name}
-          src={product.image_url}
+          src={`${product.image_url}?w=400&h=400`}
+          width="400"
+          height="400"
           className="w-11/12 object-cover rounded-md"
         />
       </figure>
 
       <div className="flex flex-col w-1/3">
-        <h2 className="mt-1 text-2xl font-bold text-gray-800">
-          {product.name}
-        </h2>
+        <h2 className="mt-1 text-2xl font-bold text-gray-800">{product.name}</h2>
         <p>Stock: {product.stock_quantity}</p>
         <p className="text-gray-500">
-          {product.quantity_sold === 0
-            ? `Not sells yet`
-            : `${product.quantity_sold} sold`}
+          {product.quantity_sold === 0 ? "Not sold yet" : `${product.quantity_sold} sold`}
         </p>
-        <span className="mt-3 block text-xl font-semibold text-green-500">
-          ${product.price}
-        </span>
+        <span className="mt-3 block text-xl font-semibold text-green-500">${product.price}</span>
         <span className="text-lg pt-1">
           <FontAwesomeIcon icon={faStar} className="text-yellow-500 mr-1" />
-          {Number(ratings.average).toFixed(1)} / 5{" "}
+          {Number(ratings.average).toFixed(1)} / 5
         </span>
       </div>
 
       <div className="w-full">
         <div className="mt-4 flex space-x-4">
-          {/* When Buy is clicked, open the Direct Purchase modal */}
           <button
             onClick={() => {
-              userId?
-              setBuyModalOpen(true) :
-              setShowAlert(403);
-              setTimeout(() => setShowAlert(false), 4000);
+              if (userId) {
+                setBuyModalOpen(true);
+              } else {
+                setShowAlert(403);
+                setTimeout(() => setShowAlert(false), 4000);
+              }
             }}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
           >
@@ -191,13 +177,12 @@ export default function ProductFocus() {
         </div>
 
         <p className="mt-2 text-gray-700 w-full">
-          Description: <br></br>
+          Description: <br />
           {product.description}
         </p>
 
         <DetailsTable productId={productId} />
 
-        {/* Ratings Section */}
         <RatingsDistribution
           distribution={ratings.distribution}
           average={ratings.average}
@@ -205,24 +190,33 @@ export default function ProductFocus() {
         />
       </div>
 
-      {isCartModalOpen && (
-        <AddToCartModal
-          product={product}
-          onClose={() => setCartModalOpen(false)}
-          onConfirm={handleAddToCart}
-        />
-      )}
+      <Suspense fallback={<div>Loading...</div>}>
+        {isCartModalOpen && (
+          <AddToCartModal
+            product={product}
+            onClose={() => setCartModalOpen(false)}
+            onConfirm={handleAddToCart}
+          />
+        )}
 
-      {/* Alerts */}
+        {isBuyModalOpen && (
+          <DirectPurchaseModal
+            product={product}
+            onClose={() => setBuyModalOpen(false)}
+            onConfirm={(quantity) => {
+              setBuyModalOpen(false);
+              setDirectPurchaseQuantity(quantity);
+              setDirectCheckoutOpen(true);
+            }}
+          />
+        )}
+      </Suspense>
+
       {showAlert === 200 && (
-        <div
-          className={`fixed bottom-1 right-2 z-10 transition-opacity duration-300 ${
-            showAlert ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <div className="alert p-3 rounded-md bg-green-400 text-white mb-1 z-10">
+        <div className="fixed bottom-1 right-2 z-10 transition-opacity duration-300 opacity-100">
+          <div className="alert p-3 rounded-md bg-green-400 text-white mb-1">
             <span
-              className="closebtn ml-5 text-white font-bold float-right text-xl leading-5 duration-300 cursor-pointer"
+              className="closebtn ml-5 text-white font-bold float-right text-xl cursor-pointer"
               onClick={() => setShowAlert(false)}
             >
               &times;
@@ -233,14 +227,10 @@ export default function ProductFocus() {
       )}
 
       {showAlert === 403 && (
-        <div
-          className={`fixed bottom-1 right-2 z-10 transition-opacity duration-300 ${
-            showAlert ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          <div className="alert p-3 rounded-md bg-red-400 text-white mb-1 z-10">
+        <div className="fixed bottom-1 right-2 z-10 transition-opacity duration-300 opacity-100">
+          <div className="alert p-3 rounded-md bg-red-400 text-white mb-1">
             <span
-              className="closebtn ml-5 text-white font-bold float-right text-xl leading-5 duration-300 cursor-pointer"
+              className="closebtn ml-5 text-white font-bold float-right text-xl cursor-pointer"
               onClick={() => setShowAlert(false)}
             >
               &times;
@@ -248,21 +238,6 @@ export default function ProductFocus() {
             Login/Register first.
           </div>
         </div>
-      )}
-
-      {isBuyModalOpen && (
-        <DirectPurchaseModal
-          product={product}
-          onClose={() => setBuyModalOpen(false)}
-          onConfirm={(quantity) => {
-            // Close the quantity-selection modal,
-            // store the chosen quantity,
-            // and then open the checkout modal.
-            setBuyModalOpen(false);
-            setDirectPurchaseQuantity(quantity);
-            setDirectCheckoutOpen(true);
-          }}
-        />
       )}
 
       {isDirectCheckoutOpen && (

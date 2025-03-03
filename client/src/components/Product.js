@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,6 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // Product.js
 export default function Product({ product }) {
   const navigate = useNavigate();
+
+    useEffect(() => {
+      if (product?.image_url) {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "image";
+        link.href = product.image_url;
+        document.head.appendChild(link);
+        return () => {
+          document.head.removeChild(link);
+        };
+      }
+    }, [product?.image_url]);
 
   return (
     <article className="max-w-sm w-11/12 bg-white shadow-lg rounded-lg overflow-hidden p-4 transform transition-transform duration-300 hover:scale-105 will-change-transform">
