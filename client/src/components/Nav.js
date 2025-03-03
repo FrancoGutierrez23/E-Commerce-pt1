@@ -18,14 +18,14 @@ export const AuthContext = createContext();
 // Auth Provider Component
 export function AuthProvider({ children }) {
   const [userId, setUserId] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!userId) {
       // Fetch only if userId is null (to prevent unnecessary re-fetching)
       fetchUserStatus(userId, setUserId, token);
     }
-  }, [userId]); // Only runs if userId is null
+  }, [userId, token]); // Only runs if userId is null
 
   return (
     <AuthContext.Provider value={{ userId, setUserId }}>
@@ -37,6 +37,7 @@ export function AuthProvider({ children }) {
 // Nav Component
 export default function Nav() {
   const { userId } = useContext(AuthContext);
+  const token = localStorage.getItem("token");
 
   return (
     <nav className="bg-indigo-800 p-4 shadow-lg fixed w-full z-10 ">
@@ -48,7 +49,7 @@ export default function Nav() {
             </Link>
           </li>
 
-          {userId ? (
+          {userId && token ? (
             <>
               <li>
                 <Link

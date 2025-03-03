@@ -6,16 +6,18 @@ export default function OrderList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const token = localStorage.getItem("token");
+
   // Fetch orders when the component mounts
   useEffect(() => {
     const obtainOrders = async () => {
       try {
-        const token = localStorage.getItem("token");
         if (!token) {
           setError("Please login/register first.");
           setLoading(false);
           return;
         }
+        console.log(token);
         const userId = window.location.pathname.split("/orders/")[1];
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/orders/${userId}`,
@@ -26,8 +28,14 @@ export default function OrderList() {
             },
           }
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
+        
+        if (!response.ok && response.status === 403) {
+          localStorage.removeItem("token");
+          setError("Session expired. Please login/register.");
+          throw Error("Session expired. Please login/register.");
+          
+        } else if (!response.ok) {
+          throw Error("Error fetching orders.");
         }
         const data = await response.json();
         setOrders(data["orders"]);
@@ -39,7 +47,7 @@ export default function OrderList() {
     };
 
     obtainOrders();
-  }, []);
+  }, [token]);
 
   if (loading) {
     return (
@@ -68,6 +76,7 @@ export default function OrderList() {
     );
   }
   if (error) {
+    console.log(error);
     return (
       <div className="pt-32 flex justify-around text-xl w-full text-gray-700 font-semibold">
         {error || error.message}
