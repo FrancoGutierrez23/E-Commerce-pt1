@@ -1,7 +1,6 @@
-const fetchUserStatus = async (userId, setUserId, token) => {
+const fetchUserStatus = async (token) => {
   if (!token) {
     // If no token is found, there's no authenticated user.
-    setUserId(null);
     return Error("Please login/register first.");
   }
 
@@ -18,13 +17,13 @@ const fetchUserStatus = async (userId, setUserId, token) => {
     );
     const data = await response.json();
     if (data.isAuthenticated) {
-      setUserId(data.user.id);
-      return true;
+      return data.user.id;
     } else {
       return null;
     }
   } catch (error) {
     console.error("Error fetching user status:", error);
+    return null;
   }
 };
 

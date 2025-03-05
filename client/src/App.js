@@ -12,6 +12,7 @@ import OrderList from "./components/OrderList.js";
 import Checkout from "./components/Checkout.js";
 import PhoneNav from "./components/PhoneNav";
 import useMediaQuery from "./components/customHooks.js";
+import AuthCallback from "./components/AuthCallback.js";
 
 function App() {
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -27,6 +28,7 @@ function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/auth/logout" element={<Logout />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/user/:userId" element={<User />} />
         <Route path="/orders/:userId" element={<OrderList />} />
         <Route path="/checkout" element={<Checkout />} />

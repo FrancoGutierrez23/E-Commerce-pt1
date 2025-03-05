@@ -65,7 +65,7 @@ const googleLogin = async (req, res) => {
         const redirect_base_uri = process.env.FRONTEND_URL || 'http://localhost:3000';
 
         // Redirect to the frontend with the token as a query parameter
-        res.redirect(`${redirect_base_uri}/user/${user.id}?token=${token}`);
+        res.redirect(`${redirect_base_uri}/auth/callback?token=${token}`);
 
     } catch (error) {
         console.error('Error during Google login:', error);

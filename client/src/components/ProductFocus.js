@@ -71,8 +71,11 @@ export default function ProductFocus() {
 
   // Fetch user status only once on mount.
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetchUserStatus(null, setUserId, token);
+    const fetch = async() => {
+      const token = localStorage.getItem("token");
+      setUserId(await fetchUserStatus(token));
+    };
+    fetch();
   }, []);
 
   const handleAddToCart = async (quantity) => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
 import { Link } from "react-router-dom";
-import fetchUserStatus from "./utils";
 import {
   faHome,
   faShoppingCart,
@@ -12,27 +11,69 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const fetchUserStatus = async (token) => {
+  // Only need the token here
+  if (!token) {
+    return Error("Please login/register first.");
+  }
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/auth/status`,
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    return data.isAuthenticated ? data.user.id : null; // Return user ID directly
+  } catch (error) {
+    console.error("Error fetching user status:", error);
+    return null; // Return null in case of error
+  }
+};
+
 // Create Auth Context
 export const AuthContext = createContext();
 
-// Auth Provider Component
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true); // New state to track loading
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (!userId) {
-      // Fetch only if userId is null (to prevent unnecessary re-fetching)
-      fetchUserStatus(userId, setUserId, token);
+  const checkAuthStatus = async () => {
+    setLoading(true);
+    try {
+      const userId = await fetchUserStatus(token); // Get userId here
+      if (userId) {
+        setUserId(userId); // Update context with userId
+      } else {
+        setUserId(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user status:", error);
+      setUserId(null);
     }
-  }, [userId, token]); // Only runs if userId is null
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (token) {
+      checkAuthStatus();
+    } else {
+      setLoading(false); // If no token, authentication check is finished
+    }
+  }, [token]);
 
   return (
-    <AuthContext.Provider value={{ userId, setUserId }}>
-      {children}
+    <AuthContext.Provider value={{ userId, loading, checkAuthStatus }}>
+      {!loading && children} {/* Prevent rendering until loading is done */}
     </AuthContext.Provider>
   );
-}
+};
 
 // Nav Component
 export default function Nav() {

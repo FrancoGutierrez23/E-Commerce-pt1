@@ -20,24 +20,35 @@ export default function CartList() {
   useEffect(() => {
     const obtainCartItems = async () => {
       const token = localStorage.getItem("token");
-      fetchUserStatus(userId,setUserId, token);
       if (!token) {
         setError("Please login/register first.");
         setLoading(false);
         return;
       }
+
       try {
+        const fetchedUserId = await fetchUserStatus(token);
+        setUserId(fetchedUserId);
+
+        const cartId = window.location.pathname.split("/cart/")[1];
+        if (!cartId) {
+          throw new Error("Invalid cart ID in URL");
+        }
+
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/cart/${window.location.pathname.split("/cart/")[1]}`,
+          `${process.env.REACT_APP_API_URL}/cart/${cartId}`,
           {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-        if (response.status === 404) throw new Error("You have not cart yet");
-        if (!response.ok) throw new Error("Failed to fetch products");
+
+        if (!response.ok && response.status === 404) {
+          throw Error('You have not cart yet.');
+        } else if (!response.ok) {
+          throw new Error("Failed to fetch cart items");
+        }
+
         const data = await response.json();
         setCartItems(data);
       } catch (err) {
@@ -47,7 +58,7 @@ export default function CartList() {
       }
     };
     obtainCartItems();
-  }, [userId]);
+  }, []);
 
   // Recalculate total when cartItems changes
   useEffect(() => {
