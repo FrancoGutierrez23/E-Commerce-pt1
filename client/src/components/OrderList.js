@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import OrderItem from "./OrderItem";
+import SingleProductOrder from "./SingleProductOrder";
+import MultiProductsOrder from "./MultiProductsOrder";
 
 export default function OrderList() {
   const [orders, setOrders] = useState([]);
@@ -49,6 +50,18 @@ export default function OrderList() {
     obtainOrders();
   }, [token]);
 
+  // Group orders
+  const groupedOrders = orders.reduce((acc, orderItem) => {
+    if (!acc[orderItem.order_id]) {
+      acc[orderItem.order_id] = [];
+    }
+    acc[orderItem.order_id].push(orderItem);
+    return acc;
+  }, {});
+
+  // Convert the grouped object into an array for mapping:
+  const orderGroups = Object.values(groupedOrders);
+
   if (loading) {
     return (
       <div
@@ -87,11 +100,13 @@ export default function OrderList() {
     <section className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Orders</h2>
       <ul className="space-y-6">
-        {orders.map((order) => (
-          <li key={order.key} className="border-b border-gray-300 pb-6">
-            <OrderItem order={order}></OrderItem>
-          </li>
-        ))}
+        {orderGroups.map((group) =>
+          group.length === 1 ? (
+            <SingleProductOrder key={group[0].order_id} order={group[0]} />
+          ) : (
+            <MultiProductsOrder key={group[0].order_id} orders={group} />
+          )
+        )}
       </ul>
     </section>
   );

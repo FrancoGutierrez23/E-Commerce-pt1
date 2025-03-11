@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function OrderItem({ order }) {
+export default function SingleProductOrder({ order }) {
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
 
   // Fetch all order items
@@ -45,8 +44,7 @@ export default function OrderItem({ order }) {
         console.error("Error deleting order:", errorData);
         return;
       }
-
-      const data = await response.json();
+      await response.json();
       window.location.reload();
     } catch (error) {
       setError(error);
@@ -57,15 +55,15 @@ export default function OrderItem({ order }) {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg mb-4">
-      <div className="flex items-center space-x-4">
+    <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg mb-4 flex-wrap">
+      <div className="flex items-center space-x-4 flex-wrap justify-center">
         <div
           onClick={() => {
             navigate(`/home/${product.id}`);
           }}
           className="cursor-pointer hover:underline text-gray-800 hover:text-indigo-600"
         >
-          <figure className="mt-3">
+          <figure className="my-3">
             <img
               alt={product.name}
               src={product.image_url}
@@ -95,7 +93,7 @@ export default function OrderItem({ order }) {
       <div className="flex items-center space-x-4">
         <button
           onClick={handleCancelOrder}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
+          className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition"
         >
           <FontAwesomeIcon icon={faTimes} /> Cancel
         </button>
