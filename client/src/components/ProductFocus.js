@@ -132,8 +132,9 @@ export default function ProductFocus() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 pt-20 relative flex flex-wrap justify-between">
-      <figure className="flex justify-start w-2/3">
+    <section className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6 pt-20 relative flex flex-wrap justify-between ">
+      <div className="flex xsm:block">
+      <figure className="flex max-w-80 w-2/3 xsm:w-full justify-center">
         <img
           alt={product.name}
           src={`${product.image_url}?w=400&h=400`}
@@ -143,7 +144,7 @@ export default function ProductFocus() {
         />
       </figure>
 
-      <div className="flex flex-col w-1/3">
+      <div className="flex flex-col  xsm:w-full">
         <h2 className="mt-1 text-2xl font-bold text-gray-800">{product.name}</h2>
         <p>Stock: {product.stock_quantity}</p>
         <p className="text-gray-500">
@@ -155,7 +156,7 @@ export default function ProductFocus() {
           {Number(ratings.average).toFixed(1)} / 5
         </span>
       </div>
-
+      </div>
       <div className="w-full">
         <div className="mt-4 flex space-x-4">
           <button

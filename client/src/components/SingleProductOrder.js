@@ -75,7 +75,7 @@ export default function SingleProductOrder({ order }) {
         <div>
           <a
             href={`/home/${product.id}`}
-            className="block text-lg font-semibold hover:underline hover:text-blue-600"
+            className="block text-lg font-semibold hover:underline hover:text-indigo-600"
           >
             {product.name}
           </a>
