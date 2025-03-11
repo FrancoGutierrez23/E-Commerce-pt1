@@ -35,6 +35,7 @@ export default function OrderList() {
           throw Error("Session expired. Please login/register.");
         } else if (!response.ok && response.status === 404) {
           setError("You have not orders yet.");
+          return;
         } else if (!response.ok) {
           throw Error("Error fetching orders.");
         }
@@ -51,7 +52,7 @@ export default function OrderList() {
   }, [token]);
 
   // Group orders
-  const groupedOrders = orders?.reduce((acc, orderItem) => {
+  const groupedOrders = orders.reduce((acc, orderItem) => {
     if (!acc[orderItem.order_id]) {
       acc[orderItem.order_id] = [];
     }
