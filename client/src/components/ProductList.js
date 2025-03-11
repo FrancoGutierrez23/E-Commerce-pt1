@@ -92,7 +92,7 @@ export default function ProductList() {
       <h2 className="text-2xl pt-10 font-bold text-gray-800 mb-6">
         Our products
       </h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
         {products.map((product) => (
           <li key={product.id} className="flex justify-center w-full">
             <Product product={product} />

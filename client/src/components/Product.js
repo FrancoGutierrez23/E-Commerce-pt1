@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// Product.js
 export default function Product({ product }) {
   const navigate = useNavigate();
 
@@ -39,7 +38,7 @@ export default function Product({ product }) {
             `}
             width="160"
             height="160"
-            className="object-cover mx-auto rounded-md"
+            className="w-auto max-h-40 mx-auto rounded-md"
           />
         </figure>
       </div>
